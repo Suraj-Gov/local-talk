@@ -14,7 +14,8 @@ export default async function userHandler(req, res) {
         console.log(getUser.rows[0], `got this user for id: ${user_id}`);
         res.json(getUser.rows[0]);
       } catch (error) {
-        console.log(error);
+        res.status(405);
+        res.json({ status: "error" });
       }
       break;
 
@@ -33,7 +34,8 @@ export default async function userHandler(req, res) {
         );
         res.json(updateUser.rows[0]);
       } catch (error) {
-        console.error(error);
+        res.status(405);
+        res.json({ status: "error" });
       }
       break;
 
@@ -47,7 +49,8 @@ export default async function userHandler(req, res) {
         console.log(deleteUser.rows[0], "user deleted");
         res.json(deleteUser.rows[0]);
       } catch (error) {
-        console.error(error);
+        res.status(405);
+        res.json({ status: "error" });
       }
       break;
 

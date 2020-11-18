@@ -10,7 +10,8 @@ export default async function userHandler(req, res) {
         console.log(users.rows, "got these for all users");
         res.json(users.rows);
       } catch (error) {
-        console.error(error);
+        res.status(405);
+        res.json({ status: "error" });
       }
       break;
 
