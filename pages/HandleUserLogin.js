@@ -16,22 +16,8 @@ export default function HandleUserLogin() {
 
   const handleLoginFetch = async (user) => {
     let profile = {};
-    const data = await axios.get(`/api/users/${user.sub}`);
-    if (data.data.message === "user not found") {
-      const newUser = {
-        auth0_id: user.sub,
-        user_name: user.nickname,
-        user_email: user.email,
-      };
-      console.log(newUser, "newUser");
-      await axios.post(`/api/users`, newUser);
-      console.log("inserted a new user to database");
-      profile = { ...newUser, ...profile };
-    } else {
-      console.log("found existing user", data.data);
-      profile = { ...data.data, ...profile };
-    }
-    navigator.geolocation.getCurrentPosition(
+
+    await navigator.geolocation.getCurrentPosition(
       async (position) => {
         // success location
         const lat = await position.coords.latitude;
@@ -53,8 +39,7 @@ export default function HandleUserLogin() {
           console.log("found existing location", userLocation.data);
           profile = { ...profile, ...userLocation.data };
         }
-
-        setUserDetails(profile);
+        setUserDetails({ ...userDetails, ...profile });
       },
 
       async () => {
@@ -66,14 +51,38 @@ export default function HandleUserLogin() {
         await axios.post(`/api/locations`, newLocation);
         console.log("inserted a new location to database");
         profile = { ...profile, ...defaultUserLocation };
+        setUserDetails({ ...userDetails, ...profile });
       }
     );
+
+    const data = await axios.get(`/api/users/${user.sub}`);
+    if (data.data.message === "user not found") {
+      const newUser = {
+        auth0_id: user.sub,
+        user_name: user.nickname,
+        user_email: user.email,
+      };
+      console.log(newUser, "newUser");
+      await axios.post(`/api/users`, newUser);
+      console.log("inserted a new user to database");
+      profile = { ...profile, ...newUser };
+    } else {
+      console.log("found existing user", data.data);
+      profile = { ...profile, ...data.data };
+    }
+    setUserDetails({ ...userDetails, ...profile });
   };
 
   useEffect(() => {
-    user === undefined
-      ? console.log("not logged in yet")
-      : handleLoginFetch(user);
+    let isMounted = true;
+    if (isMounted) {
+      user === undefined
+        ? console.log("not logged in yet")
+        : handleLoginFetch(user);
+    }
+    return () => {
+      isMounted = false;
+    };
   }, [isLoading]);
 
   return (

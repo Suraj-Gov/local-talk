@@ -1,20 +1,15 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import { useState } from "react";
 import App from "./App";
-import { UserContext } from "./context/userContext";
 
 export default function Home() {
-  const [userDetails, setUserDetails] = useState(null);
-
   return (
     <Auth0Provider
-      domain="local-talk.eu.auth0.com"
-      clientId="GdqECeXLVVFQEqGguYudRl32GA8bpe06"
-      redirectUri="http://localhost:3000"
+      domain={process.env.NEXT_PUBLIC_DOMAIN}
+      clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
+      redirectUri={process.env.NEXT_PUBLIC_REDIRECTURI}
     >
-      <UserContext.Provider value={{ userDetails, setUserDetails }}>
-        <App />
-      </UserContext.Provider>
+      <App />
     </Auth0Provider>
   );
 }

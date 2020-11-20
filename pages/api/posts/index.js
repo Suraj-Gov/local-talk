@@ -1,6 +1,6 @@
 // USAGE
 
-// GET gets all posts
+// GET gets all posts from city needs a url query - location
 // POST adds a single post needs - post_title, post_content, post_author, post_location
 
 import pool from "../../../lib/db";
@@ -11,8 +11,11 @@ export default async function PostsHandler(req, res) {
   switch (method) {
     case "GET":
       try {
+        const city = req.query.city;
+        console.log(city);
         const posts = await pool.query(
-          "SELECT * FROM posts INNER JOIN locations l ON posts.post_location = l.location_id"
+          "SELECT * FROM posts INNER JOIN locations l ON posts.post_location = l.location_id WHERE l.city = ($1)",
+          [city]
         );
         console.log(posts.rows, "got all these for posts");
         res.json(posts.rows);
