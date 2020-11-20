@@ -31,7 +31,7 @@ export default async function PostsHandler(req, res) {
           const upvotePost = await pool.query(
             upvote
               ? "UPDATE posts SET post_points = post_points + 1 WHERE post_id = ($1) RETURNING *"
-              : "UPDATE posts SET post_points = post_points + 1 WHERE post_id = ($1) RETURNING *",
+              : "UPDATE posts SET post_points = post_points - 1 WHERE post_id = ($1) RETURNING *",
             [post_id]
           );
           console.log(`${upvote ? "upvoted " : "downvoted "}post: ${post_id}`);
