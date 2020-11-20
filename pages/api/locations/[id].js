@@ -1,3 +1,7 @@
+// USAGE
+
+// GET :city sends city and location_id
+
 const pool = require("../../../lib/db");
 
 export default async function locationsHandler(req, res) {

@@ -1,3 +1,8 @@
+// USAGE
+
+// GET fetches all users ordered by their user_id
+// POST creates a new user needs - user_name, user_email, auth0_id
+
 import pool from "../../../lib/db";
 
 export default async function userHandler(req, res) {

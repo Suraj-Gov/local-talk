@@ -1,3 +1,8 @@
+// USAGE
+
+// GET gets all posts
+// POST adds a single post needs - post_title, post_content, post_author, post_location
+
 import pool from "../../../lib/db";
 
 export default async function PostsHandler(req, res) {

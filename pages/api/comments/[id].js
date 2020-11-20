@@ -1,3 +1,11 @@
+// USAGE
+
+// GET :post_id to get single post's comments
+// PUT :comment_id to update comment needs - comment_content
+// PUT :comment_id to upvote needs - upvote: true
+// PUT :comment_id to downvote needs - upvote: false
+// DELETE :comment_id to delete commment
+
 import pool from "../../../lib/db";
 
 export default async function CommentHandler(req, res) {

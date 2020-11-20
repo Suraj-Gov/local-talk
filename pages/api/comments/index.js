@@ -1,3 +1,7 @@
+// USAGE
+
+// POST add a new comment needs - comment_author, comment_content, comment_post
+
 import pool from "../../../lib/db";
 
 export default async function CommentsHandler(req, res) {

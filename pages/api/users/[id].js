@@ -1,3 +1,9 @@
+// USAGE
+
+// GET :auth0_id gets a single user
+// PUT :auth0_id upvotes a single user needs - upvote: true
+// PUT :auth0_id downvotes a single user needs - upvote: false
+
 const pool = require("../../../lib/db");
 
 export default async function userHandler(req, res) {

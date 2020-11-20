@@ -1,3 +1,11 @@
+// USAGE
+
+// GET :post_id gets a single post
+// PUT :post_id updates a single post needs - post_title, post_content, post_altered: true
+// PUT :post_id upvotes a single post needs - upvote: true
+// PUT :post_id downvotes a single post needs - upvote: false
+// DELETE :post_id deletes a single post
+
 import pool from "../../../lib/db";
 
 export default async function PostsHandler(req, res) {
@@ -5,10 +13,6 @@ export default async function PostsHandler(req, res) {
 
   switch (method) {
     case "GET":
-      if (req.query.upvote === "1") {
-        res.json({ status: "upvoted" });
-        return;
-      }
       try {
         const post_id = req.query.id;
         const getPost = await pool.query(

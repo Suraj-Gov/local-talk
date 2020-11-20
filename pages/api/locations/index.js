@@ -1,3 +1,8 @@
+// USAGE
+
+// GET all locations
+// POST add a new location needs - city
+
 import pool from "../../../lib/db";
 
 export default async function locationsHandler(req, res) {
