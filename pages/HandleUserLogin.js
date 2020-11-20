@@ -40,12 +40,10 @@ export default function HandleUserLogin() {
         const userLocationFetch = await axios.get(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}&zoom=18&addressdetails=1`
         );
-        const userPlace_id = userLocationFetch.data.place_id;
         const userCity = userLocationFetch.data.address.city;
-        const userLocation = await axios.get(`/api/locations/${userPlace_id}`);
+        const userLocation = await axios.get(`/api/locations/${userCity}`);
         if (userLocation.data.message === "location not found") {
           const newLocation = {
-            location_id: userPlace_id,
             city: userCity,
           };
           await axios.post(`/api/locations`, newLocation);
@@ -63,8 +61,7 @@ export default function HandleUserLogin() {
         // fail location
         console.log("failed to get user location");
         const defaultUserLocation = {
-          location_id: 0,
-          city: "UNDEFINED",
+          city: "NO_CITY",
         };
         await axios.post(`/api/locations`, newLocation);
         console.log("inserted a new location to database");

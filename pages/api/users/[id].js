@@ -39,7 +39,7 @@ export default async function userHandler(req, res) {
         console.log(
           `successfully ${upvote ? "upvoted" : "downvoted"} for user ${id}`
         );
-        res.json(updateUser.rows[0]);
+        res.json({ status: upvote ? "upvoted" : "downvoted" });
       } catch (error) {
         res.status(405);
         res.json({ status: "error" });

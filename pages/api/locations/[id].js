@@ -6,10 +6,10 @@ export default async function locationsHandler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const location_id = req.query.id;
+        const city = req.query.id;
         const getLocation = await pool.query(
-          "SELECT * FROM locations WHERE location_id = ($1)",
-          [location_id]
+          "SELECT * FROM locations WHERE city = ($1)",
+          [city]
         );
         if (getLocation.rows[0] === undefined) {
           res.json({ message: "location not found" });
