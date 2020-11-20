@@ -11,6 +11,10 @@ export default async function locationsHandler(req, res) {
           "SELECT * FROM locations WHERE location_id = ($1)",
           [location_id]
         );
+        if (getLocation.rows[0] === undefined) {
+          res.json({ message: "location not found" });
+          return;
+        }
         console.log(getLocation.rows[0]);
         res.json(getLocation.rows[0]);
       } catch (error) {

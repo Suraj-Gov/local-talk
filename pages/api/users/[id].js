@@ -5,15 +5,22 @@ export default async function userHandler(req, res) {
 
   switch (method) {
     case "GET":
+      console.log(req.query);
       try {
-        const user_id = req.query.id;
+        const auth0_id = req.query.id;
         const getUser = await pool.query(
-          "SELECT * FROM users WHERE user_id = ($1)",
-          [parseInt(user_id)]
+          "SELECT * FROM users WHERE auth0_id = ($1)",
+          [auth0_id]
         );
-        console.log(getUser.rows[0], `got this user for id: ${user_id}`);
-        res.json(getUser.rows[0]);
+        console.log(getUser.rows[0], `got this user for auth0id: ${auth0_id}`);
+        if (getUser.rows[0] === undefined) {
+          console.log("user not in database");
+          res.json({ message: "user not found" });
+          return;
+        }
+        res.json(...getUser.rows);
       } catch (error) {
+        console.error(error);
         res.status(405);
         res.json({ status: "error" });
       }

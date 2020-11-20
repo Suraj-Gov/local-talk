@@ -19,10 +19,10 @@ export default async function locationsHandler(req, res) {
 
     case "POST":
       try {
-        const { location_x, location_y, user_id, location_data } = req.body;
+        const { location_id, city } = req.body;
         const newLocation = await pool.query(
-          "INSERT INTO locations (location_x, location_y, user_id, location_data) VALUES ($1, $2, $3, $4) RETURNING *",
-          [location_x, location_y, user_id, location_data]
+          "INSERT INTO locations (location_id, city) VALUES ($1, $2) RETURNING *",
+          [location_id, city]
         );
         console.log(newLocation.rows[0], "added this location");
         res.json(newLocation.rows[0]);
