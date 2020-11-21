@@ -104,7 +104,7 @@ export default function HandleUserLogin() {
       )}
       <pre>{isAuthenticated ? JSON.stringify(user) : "not authenticated"}</pre>
       {userDetails && (
-        <Link href={`/user/${userDetails.user_id}`}>
+        <Link href={`/user/${userDetails.auth0_id}`}>
           <a>
             <pre>
               {userDetails === null ? "not yet" : JSON.stringify(userDetails)}

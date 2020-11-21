@@ -87,8 +87,8 @@ export async function getServerSideProps({ params }) {
 
   return {
     props: {
-      post: post,
-      comments: comments,
+      post: post === undefined ? "ERR" : post,
+      comments: comments === undefined ? "ERR" : comments,
       error: error === null ? "no error" : "ERR",
     },
   };
