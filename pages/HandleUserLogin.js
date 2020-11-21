@@ -2,6 +2,7 @@ import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/userContext";
+import Link from "next/link";
 
 export default function HandleUserLogin() {
   const {
@@ -15,6 +16,9 @@ export default function HandleUserLogin() {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const handleLoginFetch = async (user) => {
+    if (userDetails) {
+      return;
+    }
     let profile = {};
 
     await navigator.geolocation.getCurrentPosition(
@@ -96,9 +100,15 @@ export default function HandleUserLogin() {
         <LogoutButton logout={logout} />
       )}
       <pre>{isAuthenticated ? JSON.stringify(user) : "not authenticated"}</pre>
-      <pre>
-        {userDetails === null ? "not yet" : JSON.stringify(userDetails)}
-      </pre>
+      {userDetails && (
+        <Link href={`/user/${userDetails.user_id}`}>
+          <a>
+            <pre>
+              {userDetails === null ? "not yet" : JSON.stringify(userDetails)}
+            </pre>
+          </a>
+        </Link>
+      )}
     </div>
   );
 }

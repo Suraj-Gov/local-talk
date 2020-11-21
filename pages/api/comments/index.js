@@ -10,6 +10,7 @@ export default async function CommentsHandler(req, res) {
   switch (method) {
     case "POST":
       try {
+        console.log("adding comment", req.body);
         const { comment_author, comment_content, comment_post } = req.body;
         const newComment = await pool.query(
           "INSERT INTO comments (comment_author, comment_content, comment_post) VALUES ($1, $2, $3) RETURNING *",
@@ -18,6 +19,7 @@ export default async function CommentsHandler(req, res) {
         console.log(newComment.rows[0], "inserted new comment to db");
         res.json(newComment.rows[0]);
       } catch (error) {
+        console.log(error);
         res.status(405);
         res.json({ status: "error" });
       }

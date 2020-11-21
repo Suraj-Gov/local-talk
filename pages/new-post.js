@@ -1,51 +1,55 @@
-import axios from "axios";
+import Axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { UserContext } from "./context/userContext";
 
 export default function newPost() {
-  const [postTitle, setPostTitle] = useState("");
-  const [postContent, setPostContent] = useState("");
-  const router = useRouter();
   const { userDetails } = useContext(UserContext);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const router = useRouter();
 
-  const submitPost = async (e) => {
+  async function submitPost(e) {
     e.preventDefault();
     const newPost = {
-      post_title: postTitle,
-      post_content: postContent,
+      post_title: title,
+      post_content: content,
+      post_author: userDetails.user_id,
       post_location: userDetails.location_id,
     };
-    const submittedPost = await axios.post(`/api/posts`, newPost);
-    if (submittedPost) {
-      console.log("success");
-      router.push("/");
-    }
-  };
 
-  return (
+    const sendPost = await Axios.post(`/api/posts`, newPost);
+    router.replace(`/posts/${sendPost.data.post_id}`);
+  }
+
+  return userDetails ? (
     <div>
       <form>
-        <input
-          style={{ display: "block" }}
-          type="text"
-          value={postTitle}
-          maxLength="255"
-          placeholder="post_title"
-          onChange={(e) => {
-            setPostTitle(e.target.value);
-          }}
+        <h1>Hello, {userDetails.user_name}</h1>
+        <textarea
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="title"
         />
         <textarea
-          style={{ display: "block" }}
-          placeholder="post_content"
-          value={postContent}
-          onChange={(e) => {
-            setPostContent(e.target.value);
-          }}
-        ></textarea>
-        <button onClick={(e) => submitPost(e)}>Create Post</button>
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="content"
+        />
+        <button type="submit" onClick={(e) => submitPost(e)}>
+          POST!
+        </button>
       </form>
+    </div>
+  ) : (
+    <div>
+      <h1>You've not logged in</h1>
+      <Link href="/">
+        <a>
+          <button>GO HOME</button>
+        </a>
+      </Link>
     </div>
   );
 }
