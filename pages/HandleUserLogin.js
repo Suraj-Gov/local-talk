@@ -36,9 +36,12 @@ export default function HandleUserLogin() {
           const newLocation = {
             city: userCity,
           };
-          await axios.post(`/api/locations`, newLocation);
+          const sendNewLocation = await axios.post(
+            `/api/locations`,
+            newLocation
+          );
           console.log("inserted a new location to database");
-          profile = { ...profile, ...newLocation };
+          profile = { ...profile, ...sendNewLocation };
         } else {
           console.log("found existing location", userLocation.data);
           profile = { ...profile, ...userLocation.data };
@@ -97,7 +100,7 @@ export default function HandleUserLogin() {
       ) : !isAuthenticated ? (
         <LoginButton loginWithRedirect={loginWithRedirect} />
       ) : (
-        <LogoutButton logout={logout} />
+        <LogoutButton logout={logout} setUserDetails={setUserDetails} />
       )}
       <pre>{isAuthenticated ? JSON.stringify(user) : "not authenticated"}</pre>
       {userDetails && (
@@ -117,6 +120,15 @@ function LoginButton({ loginWithRedirect }) {
   return <button onClick={() => loginWithRedirect()}>Log In</button>;
 }
 
-function LogoutButton({ logout }) {
-  return <button onClick={() => logout()}>Log out</button>;
+function LogoutButton({ logout, setUserDetails }) {
+  return (
+    <button
+      onClick={() => {
+        logout();
+        setUserDetails(null);
+      }}
+    >
+      Log out
+    </button>
+  );
 }

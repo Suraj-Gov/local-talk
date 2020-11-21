@@ -83,11 +83,13 @@ export async function getServerSideProps({ params }) {
       error = error;
     });
 
+  console.log(error);
+
   return {
     props: {
       post: post,
       comments: comments,
-      error: error === undefined ? "no error" : "ERR",
+      error: error === null ? "no error" : "ERR",
     },
   };
 }
