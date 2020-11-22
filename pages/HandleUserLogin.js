@@ -97,10 +97,10 @@ export default function HandleUserLogin() {
       <h3>Login</h3>
       {isLoading ? (
         <h1>Loading</h1>
-      ) : !isAuthenticated ? (
-        <LoginButton loginWithRedirect={loginWithRedirect} />
       ) : (
-        <LogoutButton logout={logout} setUserDetails={setUserDetails} />
+        !isAuthenticated && (
+          <LoginButton loginWithRedirect={loginWithRedirect} />
+        )
       )}
       <pre>{isAuthenticated ? JSON.stringify(user) : "not authenticated"}</pre>
       {userDetails && (
@@ -120,15 +120,15 @@ function LoginButton({ loginWithRedirect }) {
   return <button onClick={() => loginWithRedirect()}>Log In</button>;
 }
 
-function LogoutButton({ logout, setUserDetails }) {
-  return (
-    <button
-      onClick={() => {
-        logout();
-        setUserDetails(null);
-      }}
-    >
-      Log out
-    </button>
-  );
-}
+// function LogoutButton({ logout, setUserDetails }) {
+//   return (
+//     <button
+//       onClick={() => {
+//         logout();
+//         setUserDetails(null);
+//       }}
+//     >
+//       Log out
+//     </button>
+//   );
+// }

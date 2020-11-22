@@ -1,10 +1,24 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import Axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
 
 export default function User({ user, error }) {
+  const { logout } = useAuth0();
+  const { setUserDetails } = useContext(UserContext);
+
   return error === "ERR" ? (
     <h1>Error</h1>
   ) : (
     <div>
+      <button
+        onClick={() => {
+          logout();
+          setUserDetails(null);
+        }}
+      >
+        Logout
+      </button>
       <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   );
