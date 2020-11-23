@@ -3,15 +3,16 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/userContext";
 import Link from "next/link";
+import {
+  LocalTalkLeftIcon,
+  NaviButton,
+  HandleUserLoginContainer,
+  NaviButtonsContainer,
+} from "../components/TopHeader";
+import { ProfileSvg } from "../components/Icons";
 
 export default function HandleUserLogin() {
-  const {
-    loginWithRedirect,
-    user,
-    isAuthenticated,
-    isLoading,
-    logout,
-  } = useAuth0();
+  const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
 
   const { userDetails, setUserDetails } = useContext(UserContext);
 
@@ -26,7 +27,6 @@ export default function HandleUserLogin() {
         // success location
         const lat = await position.coords.latitude;
         const long = await position.coords.longitude;
-        console.log("user position", lat, long);
         const userLocationFetch = await axios.get(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}&zoom=18&addressdetails=1`
         );
@@ -40,10 +40,8 @@ export default function HandleUserLogin() {
             `/api/locations`,
             newLocation
           );
-          console.log("inserted a new location to database");
           profile = { ...profile, ...sendNewLocation };
         } else {
-          console.log("found existing location", userLocation.data);
           profile = { ...profile, ...userLocation.data };
         }
         setUserDetails({ ...userDetails, ...profile });
@@ -51,12 +49,10 @@ export default function HandleUserLogin() {
 
       async () => {
         // fail location
-        console.log("failed to get user location");
         const defaultUserLocation = {
           city: "NO_CITY",
         };
         await axios.post(`/api/locations`, newLocation);
-        console.log("inserted a new location to database");
         profile = { ...profile, ...defaultUserLocation };
         setUserDetails({ ...userDetails, ...profile });
       }
@@ -69,12 +65,9 @@ export default function HandleUserLogin() {
         user_name: user.nickname,
         user_email: user.email,
       };
-      console.log(newUser, "newUser");
       await axios.post(`/api/users`, newUser);
-      console.log("inserted a new user to database");
       profile = { ...profile, ...newUser };
     } else {
-      console.log("found existing user", data.data);
       profile = { ...profile, ...data.data };
     }
     setUserDetails({ ...userDetails, ...profile });
@@ -83,9 +76,7 @@ export default function HandleUserLogin() {
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      user === undefined
-        ? console.log("not logged in yet")
-        : handleLoginFetch(user);
+      user === undefined ? {} : handleLoginFetch(user);
     }
     return () => {
       isMounted = false;
@@ -93,42 +84,50 @@ export default function HandleUserLogin() {
   }, [isLoading]);
 
   return (
-    <div style={{ backgroundColor: "#eeeeee" }}>
-      <h3>Login</h3>
-      {isLoading ? (
-        <h1>Loading</h1>
-      ) : (
-        !isAuthenticated && (
-          <LoginButton loginWithRedirect={loginWithRedirect} />
-        )
-      )}
-      <pre>{isAuthenticated ? JSON.stringify(user) : "not authenticated"}</pre>
-      {userDetails && (
-        <Link href={`/user/${userDetails.auth0_id}`}>
-          <a>
-            <pre>
-              {userDetails === null ? "not yet" : JSON.stringify(userDetails)}
-            </pre>
-          </a>
+    <HandleUserLoginContainer>
+      <LocalTalkLeftIcon>
+        <Link href="/">
+          <a>LocalTalk</a>
         </Link>
+      </LocalTalkLeftIcon>
+
+      {!userDetails ? (
+        <LoginButton
+          loginWithRedirect={loginWithRedirect}
+          isLoading={userDetails}
+        />
+      ) : (
+        <NaviButtonsContainer>
+          <NaviButton>
+            <Link href={`/user/${userDetails.auth0_id}`}>
+              <a>
+                {<ProfileSvg />}
+                <p>Profile</p>
+              </a>
+            </Link>
+          </NaviButton>
+          <NaviButton>{userDetails.city}</NaviButton>
+        </NaviButtonsContainer>
       )}
-    </div>
+    </HandleUserLoginContainer>
+    // {/* {isAuthenticated && <pre>{JSON.stringify(user)}</pre>} */}
+    // {userDetails && (
+    //   // <Link href={`/user/${userDetails.auth0_id}`}>
+    //   //   <a>
+    //   //     <pre>
+    //   //       {userDetails === null ? "not yet" : JSON.stringify(userDetails)}
+    //   //     </pre>
+    //   //   </a>
+    //   // </Link>
+    //   <h3>Hello {userDetails.user_name}</h3>
+    // )}
   );
 }
 
-function LoginButton({ loginWithRedirect }) {
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+function LoginButton({ loginWithRedirect, userDetails }) {
+  return (
+    <NaviButton onClick={() => loginWithRedirect()}>
+      {!userDetails ? "Loading" : "Log In"}
+    </NaviButton>
+  );
 }
-
-// function LogoutButton({ logout, setUserDetails }) {
-//   return (
-//     <button
-//       onClick={() => {
-//         logout();
-//         setUserDetails(null);
-//       }}
-//     >
-//       Log out
-//     </button>
-//   );
-// }

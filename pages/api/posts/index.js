@@ -14,7 +14,7 @@ export default async function PostsHandler(req, res) {
         const city = req.query.city;
         console.log(city);
         const posts = await pool.query(
-          "SELECT * FROM posts INNER JOIN locations l ON posts.post_location = l.location_id WHERE l.city = ($1)",
+          "SELECT * FROM posts INNER JOIN users u ON posts.post_author = u.user_id INNER JOIN locations l ON posts.post_location = l.location_id WHERE city = ($1)",
           [city]
         );
         console.log(posts.rows, "got all these for posts");

@@ -28,7 +28,6 @@ export default function App() {
   return (
     <>
       <HandleUserLogin />
-      <h1>Posts</h1>
       {errorInPost || !postsContext ? (
         <pre>{JSON.stringify(errorInPost, null, 2)}</pre>
       ) : (

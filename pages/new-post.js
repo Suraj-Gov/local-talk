@@ -17,6 +17,7 @@ export default function newPost() {
       post_content: content,
       post_author: userDetails.user_id,
       post_location: userDetails.location_id,
+      post_author_auth0_id: userDetails.sub,
     };
 
     const sendPost = await Axios.post(`/api/posts`, newPost);
