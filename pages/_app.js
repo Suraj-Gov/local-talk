@@ -3,10 +3,12 @@ import { useState } from "react";
 import "../styles/globals.css";
 import { UserContext } from "./context/userContext";
 import { PostsContext } from "./context/PostsContext";
+import { UpvotedContext } from "./context/UpvotedContext";
 
 function MyApp({ Component, pageProps }) {
   const [userDetails, setUserDetails] = useState(null);
   const [posts, setPosts] = useState(null);
+  const [upvoted, setUpvoted] = useState(null);
 
   return (
     <Auth0Provider
@@ -16,7 +18,9 @@ function MyApp({ Component, pageProps }) {
     >
       <UserContext.Provider value={{ userDetails, setUserDetails }}>
         <PostsContext.Provider value={{ posts, setPosts }}>
-          <Component {...pageProps} />
+          <UpvotedContext.Provider value={{ upvoted, setUpvoted }}>
+            <Component {...pageProps} />
+          </UpvotedContext.Provider>
         </PostsContext.Provider>
       </UserContext.Provider>
     </Auth0Provider>

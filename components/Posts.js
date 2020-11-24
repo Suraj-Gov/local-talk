@@ -2,6 +2,8 @@ import Link from "next/link";
 import styled from "styled-components";
 import { PointsButton } from "./PointsButton";
 import { Points } from "../components/Icons";
+import { UpvotedContext } from "../pages/context/UpvotedContext";
+import { useContext } from "react";
 
 const PostsContainer = styled.div`
   display: grid;
@@ -116,6 +118,8 @@ function getFormattedDate(dateString) {
 }
 
 export default function Posts({ posts }) {
+  const { upvoted } = useContext(UpvotedContext);
+
   return posts.length > 0 ? (
     <PostsContainer>
       {posts.map((post) => {
@@ -144,7 +148,12 @@ export default function Posts({ posts }) {
                   </Link>
                   <p>{getFormattedDate(post.post_timestamp)}</p>
                 </PostDetails>
-                <PointsButton>
+                <PointsButton
+                  onClick={() => {}}
+                  upvoted={upvoted.upvoted_posts.some(
+                    (i) => i === post.post_id
+                  )}
+                >
                   <span>
                     {<Points />}
                     <p>{post.post_points}</p>

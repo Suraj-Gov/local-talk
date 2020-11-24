@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "./context/userContext";
 import { PostsContext } from "./context/PostsContext";
+import { UpvotedContext } from "./context/UpvotedContext";
 import HandleUserLogin from "./HandleUserLogin";
 import Posts from "../components/Posts";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import Link from "next/link";
 export default function App() {
   const [errorInPost, setErrorInPosts] = useState();
   const { userDetails, setUserDetails } = useContext(UserContext);
+  const { upvoted, setUpvoted } = useContext(UpvotedContext);
   const [offset, setOffset] = useState(0);
   const { posts: postsContext, setPosts: setPostsContext } = useContext(
     PostsContext
@@ -25,7 +27,7 @@ export default function App() {
         await Axios.all([posts, upvoted]).then(
           Axios.spread((...responses) => {
             setPostsContext(responses[0].data);
-            console.log(responses[1].data, "upvoted");
+            setUpvoted(responses[1].data);
           })
         );
       } catch (error) {

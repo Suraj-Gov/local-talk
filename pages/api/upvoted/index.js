@@ -28,5 +28,10 @@ export default async function UpvotedHandler(req, res) {
         res.json({ status: "error" });
         res.status(405);
       }
+    default: {
+      res.json({ status: "error" });
+      res.status(405);
+      return;
+    }
   }
 }
