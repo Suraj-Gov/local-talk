@@ -3,7 +3,7 @@
 // GET gets all posts from city needs a url query - city
 // POST adds a single post needs - post_title, post_content, post_author, post_location
 
-import pool, { off } from "../../../lib/db";
+import pool from "../../../lib/db";
 
 export default async function PostsHandler(req, res) {
   const { method } = req;
