@@ -9,7 +9,7 @@ import {
   HandleUserLoginContainer,
   NaviButtonsContainer,
 } from "../components/TopHeader";
-import { ProfileSvg } from "../components/Icons";
+import { Location, ProfileSvg } from "../components/Icons";
 
 export default function HandleUserLogin() {
   const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
@@ -106,7 +106,12 @@ export default function HandleUserLogin() {
               </a>
             </Link>
           </NaviButton>
-          <NaviButton>{userDetails.city}</NaviButton>
+          <NaviButton>
+            <span>
+              {<Location />}
+              {userDetails.city}
+            </span>
+          </NaviButton>
         </NaviButtonsContainer>
       )}
     </HandleUserLoginContainer>

@@ -52,11 +52,15 @@ const ImageContainer = styled.div`
   img {
     //module-inside
     position: relative;
-    width: inherit;
+    width: auto;
+    height: inherit;
   }
 `;
 
 const PostWords = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
   padding: 1.5em;
 `;
 
@@ -79,7 +83,7 @@ const PostAction = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
-  padding-top: 1em;
+  margin-top: 1em;
 `;
 
 const PostDetails = styled.div`
@@ -112,7 +116,7 @@ function getFormattedDate(dateString) {
 }
 
 export default function Posts({ posts }) {
-  return (
+  return posts.length > 0 ? (
     <PostsContainer>
       {posts.map((post) => {
         return (
@@ -124,8 +128,12 @@ export default function Posts({ posts }) {
               <Link href={`/posts/${post.post_id}`} key={post.post_id}>
                 <a>
                   <TitleContent>
-                    <h3>{post.post_title}</h3>
-                    <p>{`${post.post_content.slice(0, 128)}...`}</p>
+                    <h3 onChange={() => console.log("changed")}>
+                      {post.post_title}
+                    </h3>
+                    <p>{`${post.post_content.slice(0, 128)}${
+                      post.post_content.length > 128 ? "..." : ""
+                    }`}</p>
                   </TitleContent>
                 </a>
               </Link>
@@ -148,5 +156,15 @@ export default function Posts({ posts }) {
         );
       })}
     </PostsContainer>
+  ) : (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h1>Loading...</h1>
+    </div>
   );
 }

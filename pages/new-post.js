@@ -8,20 +8,31 @@ export default function newPost() {
   const { userDetails } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const router = useRouter();
 
   async function submitPost(e) {
     e.preventDefault();
-    const newPost = {
-      post_title: title,
-      post_content: content,
-      post_author: userDetails.user_id,
-      post_location: userDetails.location_id,
-      post_author_auth0_id: userDetails.sub,
-    };
-
-    const sendPost = await Axios.post(`/api/posts`, newPost);
-    router.replace(`/posts/${sendPost.data.post_id}`);
+    if (imageURL.slice(0, 28) === "https://unsplash.com/photos/") {
+      const getImageURL = await Axios.get(
+        `https://api.unsplash.com/photos/${imageURL.slice(28)}?client_id=${
+          process.env.NEXT_PUBLIC_UNSPLASH_KEY
+        }`
+      );
+      const newPost = {
+        post_title: title,
+        post_content: content,
+        post_author: userDetails.user_id,
+        post_location: userDetails.location_id,
+        post_author_auth0_id: userDetails.sub,
+        post_image: getImageURL.data.urls.regular,
+      };
+      const sendPost = await Axios.post(`/api/posts`, newPost);
+      router.replace(`/posts/${sendPost.data.post_id}`);
+    } else {
+      alert("Not a valid Unsplash link. Please copy & paste the exact URL.");
+      return;
+    }
   }
 
   return userDetails ? (
@@ -38,6 +49,11 @@ export default function newPost() {
           onChange={(e) => setContent(e.target.value)}
           placeholder="content"
         />
+        <textarea
+          value={imageURL}
+          onChange={(e) => setImageURL(e.target.value)}
+          placeholder="image url"
+        ></textarea>
         <button type="submit" onClick={(e) => submitPost(e)}>
           POST!
         </button>

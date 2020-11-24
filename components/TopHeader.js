@@ -48,4 +48,9 @@ export const NaviButtonsContainer = styled.div`
   & > * {
     margin: 0 0.3em;
   }
+  span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 `;

@@ -16,7 +16,7 @@ export default async function CommentHandler(req, res) {
       try {
         const post_id = req.query.id;
         const post_comments = await pool.query(
-          "SELECT * FROM comments WHERE comment_post = ($1)",
+          "SELECT * FROM comments INNER JOIN users u ON comments.comment_author = u.user_id WHERE comment_post = ($1)",
           [post_id]
         );
         console.log(

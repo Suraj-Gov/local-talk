@@ -10,6 +10,7 @@ import Link from "next/link";
 export default function App() {
   const [errorInPost, setErrorInPosts] = useState();
   const { userDetails } = useContext(UserContext);
+  const [offset, setOffset] = useState(0);
   const { posts: postsContext, setPosts: setPostsContext } = useContext(
     PostsContext
   );
@@ -17,7 +18,9 @@ export default function App() {
   useEffect(async () => {
     if (userDetails && userDetails.city !== undefined) {
       try {
-        const posts = await Axios.get(`/api/posts?city=${userDetails.city}`);
+        const posts = await Axios.get(
+          `/api/posts?city=${userDetails.city}&offset=${offset}`
+        );
         setPostsContext(posts.data);
       } catch (error) {
         setErrorInPosts(error);
