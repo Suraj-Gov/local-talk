@@ -18,7 +18,7 @@ export default async function PostsHandler(req, res) {
           "SELECT * FROM posts INNER JOIN users u ON posts.post_author = u.user_id INNER JOIN locations l ON posts.post_location = l.location_id WHERE city = ($1) OFFSET($2) LIMIT 10",
           [city, offset]
         );
-        console.log(posts.rows, "got all these for posts");
+        console.log(posts.rows.length, "got these for posts");
         res.json(posts.rows);
       } catch (error) {
         res.status(405);

@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/userContext";
 import styled from "styled-components";
 import { Points } from "../../components/Icons";
@@ -117,9 +118,14 @@ export default function Post({
   comments: fetchedComments,
   error,
 }) {
-  const [comments, setComments] = useState(fetchedComments);
+  const router = useRouter();
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const { userDetails } = useContext(UserContext);
+
+  useEffect(() => {
+    setComments(fetchedComments);
+  }, [fetchedComments]);
 
   const submitComment = async (e) => {
     e.preventDefault();
@@ -136,6 +142,8 @@ export default function Post({
 
   return error === "ERR" ? (
     <h1>Something went wrong 😐, please refresh.</h1>
+  ) : router.isFallback ? (
+    <h1>Loading...</h1>
   ) : (
     <article style={{ backgroundColor: "#eee" }}>
       <ImageContainer image={fetchedPost.post_image}>
@@ -147,7 +155,7 @@ export default function Post({
         {comments ? (
           comments.map((comment) => {
             return (
-              <Comment>
+              <Comment key={comment.comment_id}>
                 <CommentContent>{comment.comment_content}</CommentContent>
                 <Author_Timestamp>
                   <Link href={`/user/${comment.auth0_id}`}>
@@ -196,7 +204,16 @@ export default function Post({
   );
 }
 
-export async function getServerSideProps({ params }) {
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    // No pages are built at run time.
+    // Enable statically generating additional pages
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params }) {
   let error = null;
   let post,
     comments = null;
@@ -228,13 +245,12 @@ export async function getServerSideProps({ params }) {
       error = error;
     });
 
-  console.log(error);
-
   return {
     props: {
-      post: post === undefined ? "ERR" : post,
-      comments: comments === undefined ? "ERR" : comments,
-      error: error === null ? "no error" : "ERR",
+      post,
+      comments,
+      error,
     },
+    revalidate: 1,
   };
 }
