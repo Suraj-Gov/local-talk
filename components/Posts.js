@@ -3,13 +3,15 @@ import styled from "styled-components";
 import { PointsButton } from "./PointsButton";
 import { Points } from "../components/Icons";
 import { UpvotedContext } from "../pages/context/UpvotedContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import Axios from "axios";
 
 const PostsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 90vw;
-  margin: 0 auto;
+  width: 85vw;
+  margin: 2em auto;
+  grid-gap: 6rem;
 `;
 
 const PostContainer = styled.div`
@@ -17,7 +19,6 @@ const PostContainer = styled.div`
   box-shadow: 10px 10px 10px rgba(147, 147, 147, 0.2);
   display: flex;
   flex-direction: column;
-  margin: 3em;
   border-radius: 10px;
   flex-direction: column;
   background-color: #f5f5f5;
@@ -44,7 +45,7 @@ const ImageContainer = styled.div`
     top: 0;
     left: 0;
     background-image: url(${(props) => props.image});
-    filter: blur(3px) saturate(20%);
+    filter: blur(3px) saturate(180%);
     background-size: cover;
     transform: scale(1.1);
     width: 100%;
@@ -62,8 +63,11 @@ const ImageContainer = styled.div`
 const PostWords = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-content: space-between;
   padding: 1.5em;
+  // if anything wanky happens, remove the height
+  height: 55%;
 `;
 
 const TitleContent = styled.div`

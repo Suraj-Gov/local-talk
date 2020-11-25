@@ -26,10 +26,12 @@ export default function App() {
         const upvoted = Axios.get(`/api/upvoted?userId=${userDetails.user_id}`);
         await Axios.all([posts, upvoted]).then(
           Axios.spread((...responses) => {
-            setPostsContext(responses[0].data);
             setUpvoted(responses[1].data);
+            setPostsContext(responses[0].data);
           })
         );
+        // console.log(postsContext, "posts");
+        // console.log(upvoted.data, "upvoted");
       } catch (error) {
         setErrorInPosts(error);
       }

@@ -16,8 +16,13 @@ export default async function UpvotedHandler(req, res) {
             "SELECT upvoted_posts, upvoted_comments FROM upvoted WHERE upvoted_user_id = ($1)",
             [userId]
           );
-          console.log(result.rows);
+          if (result.rows.length === 0) {
+            res.json({ status: "no user found" });
+            res.status(405);
+            return;
+          }
           res.json(result.rows[0]);
+          return;
         } else {
           res.json({ status: "user id not found" });
           res.status(405);

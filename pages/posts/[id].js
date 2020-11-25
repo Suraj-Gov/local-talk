@@ -4,6 +4,7 @@ import { UserContext } from "../context/userContext";
 import styled from "styled-components";
 import { Points } from "../../components/Icons";
 import { PointsButton } from "../../components/PointsButton";
+import Link from "next/link";
 
 const ImageContainer = styled.div`
   /* https://css-tricks.com/apply-a-filter-to-a-background-image/ */
@@ -21,7 +22,7 @@ const ImageContainer = styled.div`
     top: 0;
     left: 0;
     background-image: url(${(props) => props.image});
-    filter: blur(3px) saturate(20%);
+    filter: blur(3px) saturate(180%);
     background-size: cover;
     transform: scale(1.02);
     width: 100%;
@@ -37,7 +38,7 @@ const ImageContainer = styled.div`
 
   h1 {
     font-weight: 600;
-    text-shadow: 0px 0px 10px #777;
+    text-shadow: 0px 0px 10px #00000077;
     color: #eeeeee;
     font-size: 2.8em;
     width: 100%;
@@ -143,25 +144,37 @@ export default function Post({
       </ImageContainer>
       <PostContent>{fetchedPost.post_content}</PostContent>
       <CommentsContainer>
-        {comments.map((comment) => {
-          return (
-            <Comment>
-              <CommentContent>{comment.comment_content}</CommentContent>
-              <Author_Timestamp>
-                <p>{comment.user_name}</p>
-                <p>{getFormattedDate(comment.comment_timestamp)}</p>
-              </Author_Timestamp>
-              <PointsButton
-                style={{ position: "absolute", right: "2rem", bottom: "2rem" }}
-              >
-                <span>
-                  {<Points />}
-                  <p>{comment.comment_points}</p>
-                </span>
-              </PointsButton>
-            </Comment>
-          );
-        })}
+        {comments ? (
+          comments.map((comment) => {
+            return (
+              <Comment>
+                <CommentContent>{comment.comment_content}</CommentContent>
+                <Author_Timestamp>
+                  <Link href={`/user/${comment.auth0_id}`}>
+                    <a>
+                      <p style={{ color: "black" }}>{comment.user_name}</p>
+                    </a>
+                  </Link>
+                  <p>{getFormattedDate(comment.comment_timestamp)}</p>
+                </Author_Timestamp>
+                <PointsButton
+                  style={{
+                    position: "absolute",
+                    right: "2rem",
+                    bottom: "2rem",
+                  }}
+                >
+                  <span>
+                    {<Points />}
+                    <p>{comment.comment_points}</p>
+                  </span>
+                </PointsButton>
+              </Comment>
+            );
+          })
+        ) : (
+          <h1>Loading Comments</h1>
+        )}
       </CommentsContainer>
       {userDetails ? (
         <>
