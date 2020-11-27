@@ -2,7 +2,6 @@ import Link from "next/link";
 import styled from "styled-components";
 import { PointsButton } from "./PointsButton";
 import { Points } from "../components/Icons";
-import { UpvotedContext } from "../pages/context/UpvotedContext";
 import { useContext, useEffect } from "react";
 import Axios from "axios";
 
@@ -122,45 +121,40 @@ function getFormattedDate(dateString) {
 }
 
 export default function Posts({ posts }) {
-  const { upvoted } = useContext(UpvotedContext);
-
   return posts.length > 0 ? (
     <PostsContainer>
       {posts.map((post) => {
         return (
-          <PostContainer key={post.post_id}>
-            <ImageContainer image={post.post_image}>
-              <img src={post.post_image} />
+          <PostContainer key={post.post_details[0].post_id}>
+            <ImageContainer image={post.post_details[0].post_image}>
+              <img src={post.post_details[0].post_image} />
             </ImageContainer>
             <PostWords>
-              <Link href={`/posts/${post.post_id}`} key={post.post_id}>
+              <Link href={`/posts/${post.post_details[0].post_id}`}>
                 <a>
                   <TitleContent>
-                    <h3 onChange={() => console.log("changed")}>
-                      {post.post_title}
-                    </h3>
-                    <p>{`${post.post_content.slice(0, 128)}${
-                      post.post_content.length > 128 ? "..." : ""
+                    <h3>{post.post_details[0].post_title}</h3>
+                    <p>{`${post.post_details[0].post_content.slice(0, 128)}${
+                      post.post_details[0].post_content.length > 128
+                        ? "..."
+                        : ""
                     }`}</p>
                   </TitleContent>
                 </a>
               </Link>
               <PostAction>
                 <PostDetails>
-                  <Link href={`/api/users/${post.auth0_id}?all=1`}>
-                    <a>{post.user_name}</a>
+                  <Link
+                    href={`/api/users/${post.user_details[0].auth0_id}?all=1`}
+                  >
+                    <a>{post.user_details[0].user_name}</a>
                   </Link>
-                  <p>{getFormattedDate(post.post_timestamp)}</p>
+                  <p>{getFormattedDate(post.post_details[0].post_timestamp)}</p>{" "}
                 </PostDetails>
-                <PointsButton
-                  onClick={() => {}}
-                  upvoted={upvoted.upvoted_posts.some(
-                    (i) => i === post.post_id
-                  )}
-                >
+                <PointsButton>
                   <span>
                     {<Points />}
-                    <p>{post.post_points}</p>
+                    <p>{post.upvotes}</p>
                   </span>
                 </PointsButton>
               </PostAction>
@@ -170,6 +164,7 @@ export default function Posts({ posts }) {
       })}
     </PostsContainer>
   ) : (
+    // <>{console.log(posts[0])}</>
     <div
       style={{
         display: "flex",
