@@ -2,8 +2,8 @@
 
 // GET :post_id gets a single post
 // PUT :post_id updates a single post needs - post_title, post_content, post_altered: true
-// PUT :post_id upvotes a single post needs - upvote: true
-// PUT :post_id downvotes a single post needs - upvote: false
+// PUT :post_id upvotes a single post needs - upvote: true, userId, postId, commentId
+// PUT :post_id downvotes a single post needs - upvote: false, userId, postId, commentId
 // DELETE :post_id deletes a single post
 
 import pool from "../../../lib/db";
@@ -29,15 +29,36 @@ export default async function PostsHandler(req, res) {
 
     case "PUT":
       try {
+        const edit = req.query.edit;
+        edit && console.log(edit);
         const post_id = req.query.id;
-        const { upvote } = req.body;
+        const { upvote, userId, postId, commentId } = req.body;
         if (typeof upvote === "boolean") {
-          const upvotePost = await pool.query(
-            upvote
-              ? "UPDATE posts SET post_points = post_points + 1 WHERE post_id = ($1) RETURNING *"
-              : "UPDATE posts SET post_points = post_points - 1 WHERE post_id = ($1) RETURNING *",
-            [post_id]
-          );
+          if (upvote) {
+            const up =
+              postId === null
+                ? await pool.query(
+                    "INSERT INTO upvoted (upvoted_user_id, upvoted_comment) VALUES ($1, $2) RETURNING *",
+                    [userId, commentId]
+                  )
+                : await pool.query(
+                    "INSERT INTO upvoted (upvoted_user_id, upvoted_post) VALUES ($1, $2) RETURNING *",
+                    [userId, postId]
+                  );
+            console.log(up, "upvoted");
+          } else {
+            const down =
+              postId === null
+                ? await pool.query(
+                    "DELETE FROM upvoted WHERE upvoted_user_id = ($1) AND upvoted_comment = ($2) AND upvoted_post IS NULL",
+                    [userId, commentId]
+                  )
+                : await pool.query(
+                    "DELETE FROM upvoted WHERE upvoted_user_id = ($1) AND upvoted_post = ($2) AND upvoted_comment IS NULL",
+                    [userId, postId]
+                  );
+            console.log(down, "downvoted");
+          }
           console.log(`${upvote ? "upvoted " : "downvoted "}post: ${post_id}`);
           res.json({ status: upvote ? "upvoted" : "downvoted" });
           return;

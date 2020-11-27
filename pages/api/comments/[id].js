@@ -30,6 +30,7 @@ export default async function CommentHandler(req, res) {
       }
       break;
 
+    // DONT NOT USE THIS
     case "PUT":
       try {
         const comment_id = req.query.id;

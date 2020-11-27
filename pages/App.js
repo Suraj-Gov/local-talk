@@ -23,10 +23,10 @@ export default function App() {
         const posts = Axios.get(
           `/api/posts?city=${userDetails.city}&offset=${offset}`
         );
-        const upvoted = Axios.get(`/api/upvoted?userId=${userDetails.user_id}`);
-        await Axios.all([posts, upvoted]).then(
+        // const upvoted = Axios.get(`/api/upvoted?userId=${userDetails.user_id}`);
+        await Axios.all([posts]).then(
           Axios.spread((...responses) => {
-            setUpvoted(responses[1].data);
+            // setUpvoted(responses[1].data);
             setPostsContext(responses[0].data);
           })
         );

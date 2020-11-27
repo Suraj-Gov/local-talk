@@ -94,7 +94,8 @@ export default function HandleUserLogin() {
       {!userDetails ? (
         <LoginButton
           loginWithRedirect={loginWithRedirect}
-          isLoading={userDetails}
+          userDetails={userDetails}
+          isLoading={isLoading}
         />
       ) : (
         <NaviButtonsContainer>
@@ -129,10 +130,18 @@ export default function HandleUserLogin() {
   );
 }
 
-function LoginButton({ loginWithRedirect, userDetails }) {
+function LoginButton({ isLoading, loginWithRedirect, userDetails }) {
   return (
-    <NaviButton onClick={() => loginWithRedirect()}>
-      {!userDetails ? "Loading" : "Log In"}
+    <NaviButton
+      onClick={() => {
+        try {
+          loginWithRedirect();
+        } catch (err) {
+          alert(err);
+        }
+      }}
+    >
+      {!userDetails && isLoading ? "Loading" : "Log In"}
     </NaviButton>
   );
 }

@@ -15,7 +15,7 @@ export default async function PostsHandler(req, res) {
         const offset = req.query.offset;
         console.log(offset);
         const posts = await pool.query(
-          "SELECT * FROM posts INNER JOIN users u ON posts.post_author = u.user_id INNER JOIN locations l ON posts.post_location = l.location_id WHERE city = ($1) OFFSET($2) LIMIT 10",
+          "SELECT json_agg(p) AS post_details, json_agg(users) AS user_details, CAST(COUNT(u) as int) AS upvotes FROM posts p LEFT JOIN upvoted u ON p.post_id = u.upvoted_post INNER JOIN users ON p.post_author = users.user_id INNER JOIN locations l ON p.post_location = l.location_id WHERE l.city = ($1) GROUP BY p, u, users OFFSET($2) LIMIT 10",
           [city, offset]
         );
         console.log(posts.rows.length, "got these for posts");
