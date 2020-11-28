@@ -108,7 +108,8 @@ function getFormattedDate(dateString) {
         ]
       : "")
   }`;
-  const minute = date.getMinutes();
+  const minute =
+    date.getMinutes() <= 9 ? `0${date.getMinutes()}` : date.getMinutes();
   const hour = date.getHours();
   return `${dayOrdinal} ${month}, ${year} | ${hour}:${minute}`;
 }
@@ -155,28 +156,31 @@ export default function Post({
         {comments ? (
           comments.map((comment) => {
             return (
-              <Comment key={comment.comment_id}>
-                <CommentContent>{comment.comment_content}</CommentContent>
+              <Comment key={comment.comment[0].comment_id}>
+                <CommentContent>
+                  {comment.comment[0].comment_content}
+                </CommentContent>
                 <Author_Timestamp>
-                  <Link href={`/user/${comment.auth0_id}`}>
+                  <Link href={`/user/${comment.user_details[0].auth0_id}`}>
                     <a>
-                      <p style={{ color: "black" }}>{comment.user_name}</p>
+                      <p style={{ color: "black", display: "inline-block" }}>
+                        {comment.user_details[0].user_name}
+                      </p>
                     </a>
                   </Link>
-                  <p>{getFormattedDate(comment.comment_timestamp)}</p>
+                  <p>
+                    {getFormattedDate(comment.comment[0].comment_timestamp)}
+                  </p>
                 </Author_Timestamp>
-                <PointsButton
+                <UpvoteButton
                   style={{
                     position: "absolute",
                     right: "2rem",
                     bottom: "2rem",
                   }}
-                >
-                  <span>
-                    {<Points />}
-                    <p>{comment.comment_points}</p>
-                  </span>
-                </PointsButton>
+                  data={comment.upvotes}
+                  userDetails={userDetails}
+                ></UpvoteButton>
               </Comment>
             );
           })
@@ -253,4 +257,47 @@ export async function getStaticProps({ params }) {
     },
     revalidate: 1,
   };
+}
+
+function UpvoteButton({ userDetails, data }) {
+  const [points, setPoints] = useState(() =>
+    data[0] !== null ? data.length : 0
+  );
+  const [isUpvoted, setIsUpvoted] = useState(
+    userDetails === null
+      ? false
+      : data.some(
+          (upvote) =>
+            upvote !== null && upvote.upvoted_user_id === userDetails.user_id
+        ) && true
+  );
+
+  console.log(isUpvoted);
+  // initPoints={
+  //   (comment.upvotes.reduce((total, upvote) => {
+  //     console.log(upvote, "from comment total calc");
+  //     return upvote[0] === null ? total + 0 : total + 1;
+  //   }),
+  //   0)
+  // }
+  function handlePoints() {
+    console.log("pressed the button!");
+  }
+
+  return (
+    <PointsButton
+      upvoted={isUpvoted}
+      style={{
+        position: "absolute",
+        right: "2rem",
+        bottom: "2rem",
+      }}
+      onClick={() => handlePoints()}
+    >
+      <span>
+        {<Points />}
+        <p>{points}</p>
+      </span>
+    </PointsButton>
+  );
 }

@@ -19,4 +19,7 @@ export const PointsButton = styled.button`
     width: 1.5em;
     margin-right: 1em;
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;

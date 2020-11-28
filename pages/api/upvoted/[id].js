@@ -1,7 +1,5 @@
 // USAGE
 
-// PUT is incharge of recording user's upvotes, should specify :id?type="post or comment"&userId=user_id
-
 import pool from "../../../lib/db";
 
 export default async function UpvotedHandle(req, res) {
@@ -32,6 +30,7 @@ export default async function UpvotedHandle(req, res) {
         res.status(405);
         return;
       }
+
     default: {
       res.json({ status: "error" });
       res.status(405);
