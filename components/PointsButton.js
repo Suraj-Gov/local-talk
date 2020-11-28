@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const PointsButton = styled.button`
+  color: ${(props) => (props.disabled ? "#bbbbbb" : "#000000")};
   border: none;
   padding: 10px;
   background-color: ${(props) => (props.upvoted ? "#ff8080" : "#ffdddd")};
@@ -16,10 +17,11 @@ export const PointsButton = styled.button`
     align-items: center;
   }
   svg {
+    fill: ${(props) => (props.disabled ? "#bbbbbb" : "#000000")};
     width: 1.5em;
     margin-right: 1em;
   }
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
 `;

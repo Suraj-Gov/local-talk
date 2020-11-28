@@ -2,7 +2,8 @@ import Link from "next/link";
 import styled from "styled-components";
 import { PointsButton } from "./PointsButton";
 import { Points } from "../components/Icons";
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../pages/context/userContext";
 import Axios from "axios";
 
 const PostsContainer = styled.div`
@@ -151,12 +152,10 @@ export default function Posts({ posts }) {
                   </Link>
                   <p>{getFormattedDate(post.post_details[0].post_timestamp)}</p>{" "}
                 </PostDetails>
-                <PointsButton>
-                  <span>
-                    {<Points />}
-                    <p>{post.upvotes}</p>
-                  </span>
-                </PointsButton>
+                <UpvoteButton
+                  postId={post.post_details[0].post_id}
+                  data={post.upvotes}
+                ></UpvoteButton>
               </PostAction>
             </PostWords>
           </PostContainer>
@@ -174,5 +173,73 @@ export default function Posts({ posts }) {
     >
       <h1>Loading...</h1>
     </div>
+  );
+}
+
+function UpvoteButton({ postId, data }) {
+  const { userDetails } = useContext(UserContext);
+  const [points, setPoints] = useState(() =>
+    data[0] !== null ? data.length : 0
+  );
+  const [isUpvoted, setIsUpvoted] = useState(
+    userDetails === null
+      ? false
+      : data.some(
+          (upvote) =>
+            upvote !== null && upvote.upvoted_user_id === userDetails.user_id
+        ) && true
+  );
+
+  async function handlePoints() {
+    if (isUpvoted) {
+      // undo upvote i.e downvote
+      const downvote = {
+        upvote: false,
+        userId: userDetails.user_id,
+        postId: postId,
+        commentId: null,
+      };
+      try {
+        const result = await Axios.put(`/api/upvoted/${postId}`, downvote);
+        if (result.data.status === "downvoted") {
+          setPoints((prev) => prev - 1);
+          setIsUpvoted((prev) => !prev);
+        } else {
+          alert("Something went wrong. Action not recorded");
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      // upvoting
+      const upvote = {
+        upvote: true,
+        userId: userDetails.user_id,
+        postId: postId,
+        commentId: null,
+      };
+      try {
+        const result = await Axios.put(`/api/upvoted/${postId}`, upvote);
+        if (result.data.status === "upvoted") {
+          setPoints((prev) => prev + 1);
+          setIsUpvoted((prev) => !prev);
+        } else {
+          alert("Something went wrong. Action not recorded");
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  return (
+    <PointsButton upvoted={isUpvoted} onClick={() => handlePoints()}>
+      <span>
+        {<Points />}
+        <p>{points}</p>
+      </span>
+    </PointsButton>
   );
 }

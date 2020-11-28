@@ -272,7 +272,6 @@ function UpvoteButton({ userDetails, data }) {
         ) && true
   );
 
-  console.log(isUpvoted);
   // initPoints={
   //   (comment.upvotes.reduce((total, upvote) => {
   //     console.log(upvote, "from comment total calc");
@@ -287,6 +286,7 @@ function UpvoteButton({ userDetails, data }) {
   return (
     <PointsButton
       upvoted={isUpvoted}
+      disabled={userDetails === null}
       style={{
         position: "absolute",
         right: "2rem",

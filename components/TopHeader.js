@@ -22,6 +22,7 @@ export const HandleUserLoginContainer = styled.div`
 `;
 
 export const NaviButton = styled.button`
+  color: black;
   border: none;
   font-size: 1.2em;
   background-color: #eeeeee;
@@ -37,6 +38,7 @@ export const NaviButton = styled.button`
   }
 
   svg {
+    fill: black;
     width: 1em;
     margin-right: 0.5em;
   }
