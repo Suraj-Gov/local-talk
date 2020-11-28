@@ -178,8 +178,10 @@ export default function Post({
                     right: "2rem",
                     bottom: "2rem",
                   }}
+                  postId={fetchedPost.post_id}
                   data={comment.upvotes}
                   userDetails={userDetails}
+                  commentId={comment.comment[0].comment_id}
                 ></UpvoteButton>
               </Comment>
             );
@@ -222,7 +224,6 @@ export async function getStaticProps({ params }) {
   let post,
     comments = null;
   const { id } = params;
-  console.log(id);
   const fetchPost = axios.get(
     `${
       process.env.NODE_ENV !== "production"
@@ -259,7 +260,7 @@ export async function getStaticProps({ params }) {
   };
 }
 
-function UpvoteButton({ userDetails, data }) {
+function UpvoteButton({ userDetails, data, commentId, postId }) {
   const [points, setPoints] = useState(() =>
     data[0] !== null ? data.length : 0
   );
@@ -272,15 +273,48 @@ function UpvoteButton({ userDetails, data }) {
         ) && true
   );
 
-  // initPoints={
-  //   (comment.upvotes.reduce((total, upvote) => {
-  //     console.log(upvote, "from comment total calc");
-  //     return upvote[0] === null ? total + 0 : total + 1;
-  //   }),
-  //   0)
-  // }
-  function handlePoints() {
-    console.log("pressed the button!");
+  async function handlePoints() {
+    if (isUpvoted) {
+      // undo upvote i.e downvote
+      const downvote = {
+        upvote: false,
+        userId: userDetails.user_id,
+        postId: null,
+        commentId: commentId,
+      };
+      try {
+        const result = await axios.put(`/api/upvoted/${postId}`, downvote);
+        if (result.data.status === "downvoted") {
+          setPoints((prev) => prev - 1);
+          setIsUpvoted((prev) => !prev);
+        } else {
+          alert("Something went wrong. Action not recorded");
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      // upvoting
+      const upvote = {
+        upvote: true,
+        userId: userDetails.user_id,
+        postId: null,
+        commentId: commentId,
+      };
+      try {
+        const result = await axios.put(`/api/upvoted/${postId}`, upvote);
+        if (result.data.status === "upvoted") {
+          setPoints((prev) => prev + 1);
+          setIsUpvoted((prev) => !prev);
+        } else {
+          alert("Something went wrong. Action not recorded");
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
 
   return (
