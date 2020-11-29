@@ -163,7 +163,6 @@ export default function Posts({ posts }) {
       })}
     </PostsContainer>
   ) : (
-    // <>{console.log(posts[0])}</>
     <div
       style={{
         display: "flex",

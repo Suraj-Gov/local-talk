@@ -72,7 +72,7 @@ const Comment = styled.div`
   position: relative;
   margin: 3rem 0;
   padding: 2rem;
-  background-color: #efefef;
+  background-color: #f8f8f8;
   border-radius: 10px;
   box-shadow: 10px 10px 20px #12121211;
 `;
@@ -93,6 +93,42 @@ const CommentContent = styled.p`
   line-height: 1.5em;
   font-weight: 500;
   font-size: 1.4em;
+`;
+
+const CommentForm = styled.form`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0 1rem;
+`;
+
+const CommentSubmitButton = styled.button`
+  color: #000000;
+  border: none;
+  padding: 10px;
+  background-color: #eeeeee;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-size: 1.2em;
+  background-color: #dddddd;
+  margin-left: 2rem;
+`;
+
+const CommentTextInput = styled.textarea`
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  line-height: 1.2em;
+  font-size: 1.2em;
+  outline: none;
+  border: none;
+  resize: none;
+  padding: 1rem;
+  min-height: 5rem;
+  border-radius: 10px;
+  height: fit-content;
+  box-shadow: 10px 10px 20px #12121211;
 `;
 
 function getFormattedDate(dateString) {
@@ -189,23 +225,29 @@ export default function Post({
         ) : (
           <h1>Loading Comments</h1>
         )}
-      </CommentsContainer>
-      {userDetails ? (
-        <>
-          <form>
-            <input
-              type="text"
-              placeholder="addcomment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
+        {userDetails ? (
+          <>
+            <CommentForm>
+              <CommentTextInput
+                onKeyUp={(e) => {
+                  e.target.style.height = "1px";
+                  e.target.style.height = `${20 + e.target.scrollHeight}px`;
+                }}
+                type="text"
+                placeholder="Add a comment"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
 
-            <button onClick={(e) => submitComment(e)}>Submit comment</button>
-          </form>
-        </>
-      ) : (
-        <></>
-      )}
+              <CommentSubmitButton onClick={(e) => submitComment(e)}>
+                Submit comment
+              </CommentSubmitButton>
+            </CommentForm>
+          </>
+        ) : (
+          <></>
+        )}
+      </CommentsContainer>
     </article>
   );
 }
