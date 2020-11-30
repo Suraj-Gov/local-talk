@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../context/userContext";
 import styled from "styled-components";
 import { Points } from "../../components/Icons";
@@ -37,10 +37,14 @@ const ImageContainer = styled.div`
     height: inherit;
   }
 
-  h1 {
+  textarea {
+    font-family: "Inter", sans-serif;
+    border: none;
+    z-index: 150;
     font-weight: 600;
     text-shadow: 0px 0px 10px #00000077;
     color: #eeeeee;
+    background-color: transparent;
     font-size: 2.8em;
     width: 100%;
     position: absolute;
@@ -49,17 +53,6 @@ const ImageContainer = styled.div`
     padding-bottom: 2rem;
     outline: none;
   }
-`;
-
-const PostContent = styled.p`
-  background-color: #eeeeee;
-  color: #333333;
-  font-size: 1.6em;
-  width: 100%;
-  line-height: 1.6em;
-  padding: 4.5rem;
-  outline: none;
-  //
 `;
 
 const CommentsContainer = styled.div`
@@ -131,6 +124,32 @@ const CommentTextInput = styled.textarea`
   box-shadow: 10px 10px 20px #12121211;
 `;
 
+const EditButtonsDiv = styled.div`
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  z-index: 200;
+  bottom: 1rem;
+  left: 4.5rem;
+
+  button {
+    background-color: #000000aa;
+    color: white;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    padding: 0.5rem;
+    font-size: 0.8em;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    margin-right: 1rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
 function getFormattedDate(dateString) {
   const date = new Date(dateString);
   const year = date.getUTCFullYear();
@@ -159,10 +178,35 @@ export default function Post({
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const { userDetails } = useContext(UserContext);
+  const [isEditable, setIsEditable] = useState(false);
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
-    setComments(fetchedComments);
+    let isMounted = true;
+    if (isMounted) {
+      setComments(fetchedComments);
+    }
+    return () => (isMounted = false);
   }, [fetchedComments]);
+
+  const toggleEditable = () => {
+    setIsEditable((prev) => !prev);
+    if (isEditable) {
+      const finalTitle = titleRef.current.value;
+      const finalContent = contentRef.current.value;
+      const editedPost = {
+        post_title: finalTitle,
+        post_content: finalContent,
+        post_altered: true,
+        post_id: fetchedPost.post_id,
+      };
+      const res = axios.put(`/api/posts/${fetchedPost.post_id}`, editedPost);
+      if (res.status === "success") {
+        router.reload();
+      }
+    }
+  };
 
   const submitComment = async (e) => {
     e.preventDefault();
@@ -173,7 +217,14 @@ export default function Post({
     };
     const sentComment = await axios.post("/api/comments", newComment);
     sentComment.data["user_name"] = userDetails.user_name;
-    setComments((prev) => [...prev, sentComment.data]);
+    setComments((prev) => [
+      ...prev,
+      {
+        comment: [sentComment.data],
+        upvotes: [null],
+        user_details: [userDetails],
+      },
+    ]);
     setComment("");
   };
 
@@ -185,9 +236,36 @@ export default function Post({
     <article style={{ backgroundColor: "#eee" }}>
       <ImageContainer image={fetchedPost.post_image}>
         <img src={fetchedPost.post_image} />
-        <h1>{fetchedPost.post_title}</h1>
+        <PostTextArea
+          typeRef={titleRef}
+          isEditable={isEditable}
+          textContent={fetchedPost.post_title}
+        ></PostTextArea>
+        <EditButtonsDiv>
+          <button onClick={() => toggleEditable()}>
+            {isEditable ? "Save changes" : "Edit post"}
+          </button>
+          {isEditable && (
+            <button onClick={() => setIsEditable(null)}>Cancel edit</button>
+          )}
+        </EditButtonsDiv>
       </ImageContainer>
-      <PostContent>{fetchedPost.post_content}</PostContent>
+      <PostTextArea
+        textContent={fetchedPost.post_content}
+        isEditable={isEditable}
+        typeRef={contentRef}
+        style={{
+          border: "none",
+          fontFamily: "Inter, sans-serif",
+          backgroundColor: "#eeeeee",
+          color: "#333333",
+          fontSize: "1.6em",
+          width: "100%",
+          lineHeight: "1.6em",
+          padding: "4.5rem",
+          outline: "none",
+        }}
+      ></PostTextArea>
       <CommentsContainer>
         {comments ? (
           comments.map((comment) => {
@@ -375,5 +453,39 @@ function UpvoteButton({ userDetails, data, commentId, postId }) {
         <p>{points}</p>
       </span>
     </PointsButton>
+  );
+}
+
+function PostTextArea({ typeRef, textContent, isEditable, style }) {
+  const [text, setText] = useState(textContent);
+  let initialText = "";
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      initialText = textContent;
+
+      if (isEditable === null) {
+        setText(initialText);
+      }
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [isEditable]);
+
+  function handleChange(e) {
+    if (isEditable) {
+      setText(e.target.value);
+    }
+  }
+
+  return (
+    <textarea
+      ref={typeRef}
+      style={{ caretColor: !isEditable && "transparent", ...style }}
+      value={text}
+      onChange={(e) => handleChange(e)}
+    ></textarea>
   );
 }
