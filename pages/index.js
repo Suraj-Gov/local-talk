@@ -6,7 +6,11 @@ export default function Home() {
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_DOMAIN}
       clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
-      redirectUri={process.env.NEXT_PUBLIC_REDIRECTURI}
+      redirectUri={
+        process.env.NODE_ENV !== "production"
+          ? process.env.NEXT_PUBLIC_LOCALBASE_URL
+          : process.env.NEXT_PUBLIC_NETLIFY_URL
+      }
     >
       <App />
     </Auth0Provider>

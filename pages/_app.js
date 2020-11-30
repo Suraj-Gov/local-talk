@@ -13,8 +13,12 @@ function MyApp({ Component, pageProps }) {
   return (
     <Auth0Provider
       domain="local-talk.eu.auth0.com"
-      clientId="GdqECeXLVVFQEqGguYudRl32GA8bpe06"
-      redirectUri="http://localhost:3000"
+      clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
+      redirectUri={
+        !process.env.NODE_ENV === "production"
+          ? process.env.NEXT_PUBLIC_LOCALBASE_URL
+          : process.env.NEXT_PUBLIC_NETLIFY_URL
+      }
     >
       <UserContext.Provider value={{ userDetails, setUserDetails }}>
         <PostsContext.Provider value={{ posts, setPosts }}>
