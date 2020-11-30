@@ -30,7 +30,7 @@ export default async function UpvotedHandler(req, res) {
         }
       } catch (err) {
         console.error(err);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
         res.status(405);
       }
     default: {

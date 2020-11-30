@@ -23,7 +23,7 @@ export default async function PostsHandler(req, res) {
         res.json(getPost.rows[0]);
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 
@@ -41,7 +41,7 @@ export default async function PostsHandler(req, res) {
         res.json({ status: "success" });
       } catch (error) {
         res.status(405);
-        res.json({ status: error });
+        res.json({ status: error, error: error });
       }
       break;
 
@@ -56,7 +56,7 @@ export default async function PostsHandler(req, res) {
         res.json({ status: "deleted" });
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
   }

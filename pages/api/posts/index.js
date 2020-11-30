@@ -22,7 +22,7 @@ export default async function PostsHandler(req, res) {
         res.json(posts.rows);
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 
@@ -44,7 +44,7 @@ export default async function PostsHandler(req, res) {
       } catch (error) {
         console.log(error);
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
 
     default:

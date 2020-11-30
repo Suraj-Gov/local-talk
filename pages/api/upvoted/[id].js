@@ -54,7 +54,7 @@ export default async function UpvotedHandle(req, res) {
       } catch (error) {
         console.log(error);
         res.status(405);
-        res.json({ status: error });
+        res.json({ status: error, error: error });
       }
       break;
 

@@ -18,7 +18,7 @@ export default async function locationsHandler(req, res) {
         res.json(locations.rows);
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 
@@ -33,7 +33,7 @@ export default async function locationsHandler(req, res) {
         res.json(newLocation.rows[0]);
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 

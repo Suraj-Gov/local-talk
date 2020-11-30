@@ -17,7 +17,7 @@ export default async function userHandler(req, res) {
         res.json(users.rows);
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 

@@ -23,7 +23,7 @@ export default async function locationsHandler(req, res) {
         res.json(getLocation.rows[0]);
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 

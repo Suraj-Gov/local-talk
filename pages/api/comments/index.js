@@ -21,7 +21,7 @@ export default async function CommentsHandler(req, res) {
       } catch (error) {
         console.log(error);
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 

@@ -64,7 +64,7 @@ export default async function userHandler(req, res) {
       } catch (error) {
         console.error(error);
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 
@@ -84,7 +84,7 @@ export default async function userHandler(req, res) {
         res.json({ status: upvote ? "upvoted" : "downvoted" });
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 
@@ -99,7 +99,7 @@ export default async function userHandler(req, res) {
         res.json(deleteUser.rows[0]);
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 

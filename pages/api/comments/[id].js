@@ -27,7 +27,7 @@ export default async function CommentHandler(req, res) {
       } catch (error) {
         console.log(error);
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 
@@ -73,7 +73,7 @@ export default async function CommentHandler(req, res) {
         res.json({ status: "deleted" });
       } catch (error) {
         res.status(405);
-        res.json({ status: "error" });
+        res.json({ status: "error", error: error });
       }
       break;
 
