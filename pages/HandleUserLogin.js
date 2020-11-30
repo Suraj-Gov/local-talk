@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext, useEffect } from "react";
-import { UserContext } from "./context/userContext";
+import UserContext from "../context/UserContext";
 import Link from "next/link";
 import {
   LocalTalkLeftIcon,

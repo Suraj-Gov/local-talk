@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { PointsButton } from "./PointsButton";
 import { Points } from "../components/Icons";
 import { useContext, useState } from "react";
-import { UserContext } from "../pages/context/userContext";
+import UserContext from "../context/UserContext";
 import Axios from "axios";
 
 const PostsContainer = styled.div`

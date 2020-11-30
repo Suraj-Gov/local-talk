@@ -1,9 +1,9 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import { useState } from "react";
 import "../styles/globals.css";
-import { UserContext } from "./context/userContext";
-import { PostsContext } from "./context/PostsContext";
-import { UpvotedContext } from "./context/UpvotedContext";
+import UserContext from "../context/UserContext";
+import PostsContext from "../context/PostsContext";
+import UpvotedContext from "../context/UpvotedContext";
 
 function MyApp({ Component, pageProps }) {
   const [userDetails, setUserDetails] = useState(null);

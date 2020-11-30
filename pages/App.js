@@ -1,8 +1,7 @@
 import Axios from "axios";
-import { useRouter } from "next/router";
 import { useContext, useState, useEffect } from "react";
-import { UserContext } from "./context/userContext";
-import { PostsContext } from "./context/PostsContext";
+import UserContext from "../context/UserContext";
+import PostsContext from "../context/PostsContext";
 import HandleUserLogin from "./HandleUserLogin";
 import Posts from "../components/Posts";
 import Link from "next/link";

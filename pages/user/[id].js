@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import Axios from "axios";
 import { useContext } from "react";
-import { UserContext } from "../context/userContext";
+import UserContext from "../../context/UserContext";
 
 export default function User({ user, error }) {
   const { logout } = useAuth0();

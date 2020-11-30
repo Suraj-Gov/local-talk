@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState, useRef } from "react";
-import { UserContext } from "../context/userContext";
+import UserContext from "../../context/UserContext";
 import styled from "styled-components";
 import { Points } from "../../components/Icons";
 import { PointsButton } from "../../components/PointsButton";

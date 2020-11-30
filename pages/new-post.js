@@ -2,7 +2,7 @@ import Axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { UserContext } from "./context/userContext";
+import UserContext from "../context/UserContext";
 
 export default function newPost() {
   const { userDetails } = useContext(UserContext);

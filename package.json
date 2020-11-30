@@ -16,6 +16,9 @@
     "react-dom": "17.0.1",
     "styled-components": "^5.2.1"
   },
+  "devDependencies": {
+    "babel-plugin-styled-components": "latest"
+  },
   "engines": {
     "node": "12.x",
     "npm": "6.x"
