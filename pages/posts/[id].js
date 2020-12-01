@@ -49,8 +49,8 @@ const ImageContainer = styled.div`
     width: 100%;
     position: absolute;
     bottom: 0;
+    overflow: hidden;
     padding: 4.5rem;
-    padding-bottom: 2rem;
     outline: none;
   }
 `;
@@ -241,14 +241,16 @@ export default function Post({
           isEditable={isEditable}
           textContent={fetchedPost.post_title}
         ></PostTextArea>
-        <EditButtonsDiv>
-          <button onClick={() => toggleEditable()}>
-            {isEditable ? "Save changes" : "Edit post"}
-          </button>
-          {isEditable && (
-            <button onClick={() => setIsEditable(null)}>Cancel edit</button>
-          )}
-        </EditButtonsDiv>
+        {userDetails && (
+          <EditButtonsDiv>
+            <button onClick={() => toggleEditable()}>
+              {isEditable ? "Save changes" : "Edit post"}
+            </button>
+            {isEditable && (
+              <button onClick={() => setIsEditable(null)}>Cancel edit</button>
+            )}
+          </EditButtonsDiv>
+        )}
       </ImageContainer>
       <PostTextArea
         textContent={fetchedPost.post_content}
@@ -264,6 +266,7 @@ export default function Post({
           lineHeight: "1.6em",
           padding: "4.5rem",
           outline: "none",
+          overflow: "hidden",
         }}
       ></PostTextArea>
       <CommentsContainer>
@@ -458,11 +461,13 @@ function UpvoteButton({ userDetails, data, commentId, postId }) {
 
 function PostTextArea({ typeRef, textContent, isEditable, style }) {
   const [text, setText] = useState(textContent);
+
   let initialText = "";
 
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
+      typeRef.current.style.height = typeRef.current.scrollHeight + "px";
       initialText = textContent;
 
       if (isEditable === null) {
@@ -482,6 +487,10 @@ function PostTextArea({ typeRef, textContent, isEditable, style }) {
 
   return (
     <textarea
+      onKeyUp={(e) => {
+        e.target.style.height = "1px";
+        e.target.style.height = `${20 + e.target.scrollHeight}px`;
+      }}
       ref={typeRef}
       style={{ caretColor: !isEditable && "transparent", ...style }}
       value={text}
