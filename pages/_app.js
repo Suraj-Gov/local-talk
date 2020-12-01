@@ -12,13 +12,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Auth0Provider
-      domain="local-talk.eu.auth0.com"
+      domain={process.env.NEXT_PUBLIC_DOMAIN}
       clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
       redirectUri={
-        !process.env.NODE_ENV === "production"
+        process.env.NODE_ENV !== "production"
           ? process.env.NEXT_PUBLIC_LOCALBASE_URL
           : process.env.NEXT_PUBLIC_VERCEL_URL
       }
+      cacheLocation="localstorage"
     >
       <UserContext.Provider value={{ userDetails, setUserDetails }}>
         <PostsContext.Provider value={{ posts, setPosts }}>

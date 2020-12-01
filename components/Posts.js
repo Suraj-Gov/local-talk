@@ -122,7 +122,17 @@ function getFormattedDate(dateString) {
 }
 
 export default function Posts({ posts }) {
-  return posts.length > 0 ? (
+  return posts.loading ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h1>Loading...</h1>
+    </div>
+  ) : posts.length > 0 ? (
     <PostsContainer>
       {posts.map((post) => {
         return (
@@ -170,7 +180,7 @@ export default function Posts({ posts }) {
         alignItems: "center",
       }}
     >
-      <h1>Loading...</h1>
+      <h1>No posts to show, create a new post!</h1>
     </div>
   );
 }
