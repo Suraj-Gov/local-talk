@@ -32,7 +32,7 @@ export async function getServerSideProps({ params }) {
     `${
       process.env.NODE_ENV !== "production"
         ? process.env.NEXT_PUBLIC_LOCALBASE_URL
-        : process.env.NEXT_PUBLIC_PRODBASE_URL
+        : process.env.NEXT_PUBLIC_VERCEL_URL
     }/api/users/${id}?all=1`
   );
   user = fetchUser.data;

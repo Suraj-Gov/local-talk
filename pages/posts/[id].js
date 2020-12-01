@@ -348,14 +348,14 @@ export async function getStaticProps({ params }) {
     `${
       process.env.NODE_ENV !== "production"
         ? process.env.NEXT_PUBLIC_LOCALBASE_URL
-        : process.env.NEXT_PUBLIC_NETLIFY_URL
+        : process.env.NEXT_PUBLIC_VERCEL_URL
     }/api/posts/${id}`
   );
   const fetchComments = axios.get(
     `${
       process.env.NODE_ENV !== "production"
         ? process.env.NEXT_PUBLIC_LOCALBASE_URL
-        : process.env.NEXT_PUBLIC_NETLIFY_URL
+        : process.env.NEXT_PUBLIC_VERCEL_URL
     }/api/comments/${id}`
   );
   await axios
