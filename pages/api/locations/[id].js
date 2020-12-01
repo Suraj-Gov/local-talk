@@ -2,7 +2,7 @@
 
 // GET :city sends city and location_id
 
-const pool = require("../../../lib/db");
+const knex = require("../../../lib/db");
 
 export default async function locationsHandler(req, res) {
   const { method } = req;
@@ -11,8 +11,8 @@ export default async function locationsHandler(req, res) {
     case "GET":
       try {
         const city = req.query.id;
-        const getLocation = await pool.query(
-          "SELECT * FROM locations WHERE city = ($1)",
+        const getLocation = await knex.raw(
+          "SELECT * FROM locations WHERE city = (?)",
           [city]
         );
         if (getLocation.rows[0] === undefined) {

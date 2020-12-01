@@ -3,7 +3,7 @@
 // GET all locations
 // POST add a new location needs - city
 
-import pool from "../../../lib/db";
+import knex from "../../../lib/db";
 
 export default async function locationsHandler(req, res) {
   const { method } = req;
@@ -11,7 +11,7 @@ export default async function locationsHandler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const locations = await pool.query(
+        const locations = await knex.raw(
           "SELECT * FROM locations ORDER BY location_id"
         );
         console.log(locations.rows, "got these for all locations");
@@ -25,8 +25,8 @@ export default async function locationsHandler(req, res) {
     case "POST":
       try {
         const { city } = req.body;
-        const newLocation = await pool.query(
-          "INSERT INTO locations (city) VALUES ($1) RETURNING *",
+        const newLocation = await knex.raw(
+          "INSERT INTO locations (city) VALUES (?) RETURNING *",
           [city]
         );
         console.log(newLocation.rows[0], "added this location");

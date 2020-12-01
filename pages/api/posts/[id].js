@@ -6,7 +6,7 @@
 // PUT :post_id downvotes a single post needs - upvote: false, userId, postId, commentId
 // DELETE :post_id deletes a single post
 
-import pool from "../../../lib/db";
+import knex from "../../../lib/db";
 
 export default async function PostsHandler(req, res) {
   const { method } = req;
@@ -15,8 +15,8 @@ export default async function PostsHandler(req, res) {
     case "GET":
       try {
         const post_id = req.query.id;
-        const getPost = await pool.query(
-          "SELECT * FROM posts INNER JOIN locations l ON posts.post_location = l.location_id WHERE post_id = ($1)",
+        const getPost = await knex.raw(
+          "SELECT * FROM posts INNER JOIN locations l ON posts.post_location = l.location_id WHERE post_id = (?)",
           [post_id]
         );
         console.log(getPost.rows[0], `got this for post_id: ${post_id}`);
@@ -32,8 +32,8 @@ export default async function PostsHandler(req, res) {
         const post_id = req.query.id;
         const { post_title, post_content, post_altered } = req.body;
         console.log(req.body);
-        const putPost = await pool.query(
-          "UPDATE posts SET post_timestamp=now(), post_title=($1), post_content=($2), post_altered=($3) where post_id = ($4) RETURNING *",
+        const putPost = await knex.raw(
+          "UPDATE posts SET post_timestamp=now(), post_title=(?), post_content=(?), post_altered=(?) where post_id = (?) RETURNING *",
           [post_title, post_content, post_altered, parseInt(post_id)]
         );
         console.log(putPost);
@@ -49,7 +49,7 @@ export default async function PostsHandler(req, res) {
       try {
         const post_id = req.query.id;
         const deletePost = await pool.query(
-          "DELETE FROM POSTS WHERE post_id = ($1) RETURNING *",
+          "DELETE FROM POSTS WHERE post_id = (?) RETURNING *",
           [post_id]
         );
         console.log(deletePost.rows[0], `deleted post: ${post_id}`);
