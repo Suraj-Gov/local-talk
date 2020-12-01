@@ -9,7 +9,7 @@ export default function Home() {
       redirectUri={
         process.env.NODE_ENV !== "production"
           ? process.env.NEXT_PUBLIC_LOCALBASE_URL
-          : process.env.NEXT_PUBLIC_NETLIFY_URL
+          : process.env.NEXT_PUBLIC_VERCEL_URL
       }
     >
       <App />

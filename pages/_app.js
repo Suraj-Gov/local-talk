@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }) {
       redirectUri={
         !process.env.NODE_ENV === "production"
           ? process.env.NEXT_PUBLIC_LOCALBASE_URL
-          : process.env.NEXT_PUBLIC_NETLIFY_URL
+          : process.env.NEXT_PUBLIC_VERCEL_URL
       }
     >
       <UserContext.Provider value={{ userDetails, setUserDetails }}>
