@@ -19,6 +19,7 @@ export default function User({ user, error }) {
         onClick={() => {
           logout();
           setUserDetails(null);
+          localStorage.removeItem("userDetails");
         }}
       >
         Logout

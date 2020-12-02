@@ -1,5 +1,5 @@
 import { Auth0Provider } from "@auth0/auth0-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import UserContext from "../context/UserContext";
 import PostsContext from "../context/PostsContext";
@@ -22,6 +22,14 @@ function MyApp({ Component, pageProps }) {
   const [userDetails, setUserDetails] = useState(null);
   const [posts, setPosts] = useState(null);
   const [upvoted, setUpvoted] = useState(null);
+
+  useEffect(() => {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    if (userDetails !== null) {
+      setUserDetails(userDetails);
+      console.log(userDetails);
+    }
+  }, []);
 
   return (
     <Auth0Provider

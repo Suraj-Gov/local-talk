@@ -17,9 +17,9 @@ export default function HandleUserLogin() {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const handleLoginFetch = async (user) => {
-    if (userDetails) {
-      return;
-    }
+    // if (userDetails) {
+    //   return;
+    // }
     let profile = {};
 
     await navigator.geolocation.getCurrentPosition(
@@ -116,21 +116,26 @@ export default function HandleUserLogin() {
         </NaviButtonsContainer>
       )}
     </HandleUserLoginContainer>
-    // {/* {isAuthenticated && <pre>{JSON.stringify(user)}</pre>} */}
-    // {userDetails && (
-    //   // <Link href={`/user/${userDetails.auth0_id}`}>
-    //   //   <a>
-    //   //     <pre>
-    //   //       {userDetails === null ? "not yet" : JSON.stringify(userDetails)}
-    //   //     </pre>
-    //   //   </a>
-    //   // </Link>
-    //   <h3>Hello {userDetails.user_name}</h3>
-    // )}
   );
 }
 
 function LoginButton({ user, isLoading, loginWithRedirect, userDetails }) {
+  // return !user && isLoading ? (
+  //   <NaviButton>Loading</NaviButton>
+  // ) : (
+  //   <NaviButton
+  //     onClick={() => {
+  //       try {
+  //         loginWithRedirect();
+  //       } catch (err) {
+  //         alert(err);
+  //       }
+  //     }}
+  //   >
+  //     Log in
+  //   </NaviButton>
+  // );
+
   return (
     <NaviButton
       onClick={() => {
@@ -141,7 +146,7 @@ function LoginButton({ user, isLoading, loginWithRedirect, userDetails }) {
         }
       }}
     >
-      {!user && isLoading ? "Loading" : "Log In"}
+      Log in
     </NaviButton>
   );
 }

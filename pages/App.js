@@ -37,18 +37,7 @@ export default function App() {
 
   useEffect(async () => {
     if (userDetails && userDetails.city !== undefined) {
-      // try {
-      //   const posts = Axios.get(
-      //     `/api/posts?city=${userDetails.city}&offset=${offset}`
-      //   );
-      //   await Axios.all([posts]).then(
-      //     Axios.spread((...responses) => {
-      //       setPostsContext(responses[0].data);
-      //     })
-      //   );
-      // } catch (error) {
-      //   setErrorInPosts(error);
-      // }
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
       setPostsContext({ loading: true });
       const posts = await Axios.get(
         `/api/posts?city=${userDetails.city}&offset=${offset}`
