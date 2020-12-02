@@ -70,7 +70,7 @@ export default async function CommentHandler(req, res) {
           [comment_id]
         );
         console.log(deleteComment.rows[0], `deleted comment: ${comment_id}`);
-        res.json({ status: "deleted" });
+        res.json({ status: true });
       } catch (error) {
         res.status(405);
         res.json({ status: "error", error: error });

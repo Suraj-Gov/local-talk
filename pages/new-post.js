@@ -13,19 +13,26 @@ export default function newPost() {
 
   async function submitPost(e) {
     e.preventDefault();
-    if (imageURL.slice(0, 28) === "https://unsplash.com/photos/") {
-      const getImageURL = await Axios.get(
-        `https://api.unsplash.com/photos/${imageURL.slice(28)}?client_id=${
-          process.env.NEXT_PUBLIC_UNSPLASH_KEY
-        }`
-      );
+    if (
+      imageURL.slice(0, 28) === "https://unsplash.com/photos/" ||
+      imageURL.length === 0
+    ) {
+      const getImageURL =
+        imageURL.length === 0
+          ? "NO"
+          : await Axios.get(
+              `https://api.unsplash.com/photos/${imageURL.slice(
+                28
+              )}?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}`
+            );
       const newPost = {
         post_title: title,
         post_content: content,
         post_author: userDetails.user_id,
         post_location: userDetails.location_id,
         post_author_auth0_id: userDetails.sub,
-        post_image: getImageURL.data.urls.regular,
+        post_image:
+          imageURL.length === 0 ? "NO" : getImageURL.data.urls.regular,
       };
       const sendPost = await Axios.post(`/api/posts`, newPost);
       router.replace(`/posts/${sendPost.data.post_id}`);
