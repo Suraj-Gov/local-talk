@@ -44,7 +44,8 @@ const ImageContainer = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    background-image: url(${(props) => props.image});
+    background-color: ${(props) => props.image === "NO" && "#D56E6E"};
+    background-image: url(${(props) => props.image !== "NO" && props.image});
     filter: blur(3px) saturate(180%);
     background-size: cover;
     transform: scale(1.1);
@@ -138,7 +139,9 @@ export default function Posts({ posts }) {
         return (
           <PostContainer key={post.post_details[0].post_id}>
             <ImageContainer image={post.post_details[0].post_image}>
-              <img src={post.post_details[0].post_image} />
+              {post.post_details[0].post_image !== "NO" && (
+                <img src={post.post_details[0].post_image} />
+              )}
             </ImageContainer>
             <PostWords>
               <Link href={`/posts/${post.post_details[0].post_id}`}>
