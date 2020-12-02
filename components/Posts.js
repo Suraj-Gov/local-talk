@@ -155,9 +155,7 @@ export default function Posts({ posts }) {
               </Link>
               <PostAction>
                 <PostDetails>
-                  <Link
-                    href={`/api/users/${post.user_details[0].auth0_id}?all=1`}
-                  >
+                  <Link href={`/user/${post.user_details[0].auth0_id}`}>
                     <a>{post.user_details[0].user_name}</a>
                   </Link>
                   <p>{getFormattedDate(post.post_details[0].post_timestamp)}</p>{" "}

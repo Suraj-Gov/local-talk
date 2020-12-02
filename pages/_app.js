@@ -9,7 +9,7 @@ import Router from "next/router";
 
 NProgress.configure({
   minimum: 0.3,
-  easing: "ease",
+  easing: "cubic-bezier(0.7, 0, 0.84, 0)",
   speed: 800,
   showSpinner: true,
 });

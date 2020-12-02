@@ -51,6 +51,7 @@ const ImageContainer = styled.div`
     bottom: 0;
     overflow: hidden;
     padding: 4.5rem;
+    resize: none;
     outline: none;
   }
 `;
@@ -245,6 +246,21 @@ export default function Post({
           <EditButtonsDiv>
             <button onClick={() => toggleEditable()}>
               {isEditable ? "Save changes" : "Edit post"}
+            </button>
+            <button
+              onClick={async () => {
+                const canDelete = confirm("Do you want to delete this post?");
+                if (canDelete) {
+                  const deletePost = await axios.delete(
+                    `/api/posts/${fetchedPost.post_id}`
+                  );
+                  if (deletePost.status) {
+                    router.push("/");
+                  }
+                } else return;
+              }}
+            >
+              Delete post
             </button>
             {isEditable && (
               <button onClick={() => setIsEditable(null)}>Cancel edit</button>
