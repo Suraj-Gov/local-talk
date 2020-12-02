@@ -94,7 +94,6 @@ export default function HandleUserLogin() {
       {!userDetails ? (
         <LoginButton
           loginWithRedirect={loginWithRedirect}
-          userDetails={userDetails}
           isLoading={isLoading}
           user={user}
         />

@@ -1,14 +1,18 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import Axios from "axios";
+import { useRouter } from "next/router";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 
 export default function User({ user, error }) {
   const { logout } = useAuth0();
   const { setUserDetails } = useContext(UserContext);
+  const router = useRouter();
 
   return error === "ERR" ? (
     <h1>Error</h1>
+  ) : router.isFallback ? (
+    <h1>Loading...</h1>
   ) : (
     <div>
       <button
@@ -42,6 +46,7 @@ export async function getServerSideProps({ params }) {
     props: {
       user: user,
       error: error === null ? "no error" : "ERR",
+      fallback: true,
     },
   };
 }

@@ -4,6 +4,19 @@ import "../styles/globals.css";
 import UserContext from "../context/UserContext";
 import PostsContext from "../context/PostsContext";
 import UpvotedContext from "../context/UpvotedContext";
+import NProgress from "nprogress";
+import Router from "next/router";
+
+NProgress.configure({
+  minimum: 0.3,
+  easing: "easeOutQuad",
+  speed: 800,
+  showSpinner: true,
+});
+
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 function MyApp({ Component, pageProps }) {
   const [userDetails, setUserDetails] = useState(null);

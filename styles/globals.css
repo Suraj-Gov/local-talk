@@ -15,3 +15,13 @@ body {
 a {
   text-decoration: none;
 }
+
+#nprogress .bar {
+  height: 10px;
+  border-radius: 20px;
+  background: linear-gradient(to right, #4568dc, #b06ab3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
