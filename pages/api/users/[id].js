@@ -68,26 +68,6 @@ export default async function userHandler(req, res) {
       }
       break;
 
-    case "PUT":
-      try {
-        const id = req.query.id;
-        const { upvote } = req.body;
-        const updateUser = await pool.query(
-          upvote
-            ? "UPDATE users SET user_points = (user_points + 1) WHERE user_id = ($1) RETURNING *"
-            : "UPDATE users SET user_points = (user_points - 1) WHERE user_id = ($1) RETURNING *",
-          [id]
-        );
-        console.log(
-          `successfully ${upvote ? "upvoted" : "downvoted"} for user ${id}`
-        );
-        res.json({ status: upvote ? "upvoted" : "downvoted" });
-      } catch (error) {
-        res.status(405);
-        res.json({ status: "error", error: error });
-      }
-      break;
-
     case "DELETE":
       try {
         const id = req.query.id;

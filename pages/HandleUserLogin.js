@@ -64,6 +64,7 @@ export default function HandleUserLogin() {
         auth0_id: user.sub,
         user_name: user.nickname,
         user_email: user.email,
+        user_picture: user.picture,
       };
       await axios.post(`/api/users`, newUser);
       profile = { ...profile, ...newUser };
