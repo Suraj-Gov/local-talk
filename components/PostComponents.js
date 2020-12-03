@@ -63,9 +63,13 @@ export const Comment = styled.div`
   background-color: #f8f8f8;
   border-radius: 10px;
   box-shadow: 10px 10px 20px #12121211;
+  display: flex;
+  flex-direction: row;
 `;
 
 export const Author_Timestamp = styled.div`
+  align-self: flex-start;
+  text-align: center;
   padding-top: 3rem;
   & *:nth-child(1) {
     padding-bottom: 0.5rem;
@@ -129,6 +133,7 @@ export const EditButtonsDiv = styled.div`
   left: 4.5rem;
 
   button {
+    display: inline-block;
     background-color: #000000aa;
     color: white;
     font-weight: 600;
@@ -144,4 +149,15 @@ export const EditButtonsDiv = styled.div`
       cursor: pointer;
     }
   }
+`;
+
+export const LeftDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: "9em";
+`;
+
+export const UserPicture = styled.img`
+  border-radius: 50%;
 `;

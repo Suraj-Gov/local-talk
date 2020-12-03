@@ -16,6 +16,8 @@ import {
   CommentsContainer,
   EditButtonsDiv,
   ImageContainer,
+  LeftDiv,
+  UserPicture,
 } from "../../components/PostComponents";
 
 function getFormattedDate(dateString) {
@@ -159,35 +161,50 @@ export default function Post({
           comments.map((comment) => {
             return (
               <Comment key={comment.comment[0].comment_id}>
-                <CommentContent>
-                  {comment.comment[0].comment_content}
-                </CommentContent>
-                <EditButtonsDiv comment={true}>
-                  <button
-                    onClick={async () => {
-                      const deletedPost = await axios.delete(
-                        `/api/comments/${comment.comment[0].comment_id}`
-                      );
-                      if (deletedPost.data.status) {
-                        router.reload();
-                      }
-                    }}
-                  >
-                    Delete comment
-                  </button>
-                </EditButtonsDiv>
-                <Author_Timestamp>
-                  <Link href={`/user/${comment.user_details[0].auth0_id}`}>
-                    <a>
-                      <p style={{ color: "black", display: "inline-block" }}>
-                        {comment.user_details[0].user_name}
-                      </p>
-                    </a>
-                  </Link>
-                  <p>
-                    {getFormattedDate(comment.comment[0].comment_timestamp)}
-                  </p>
-                </Author_Timestamp>
+                <LeftDiv
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: "9em",
+                  }}
+                >
+                  <UserPicture
+                    style={{ borderRadius: "50%" }}
+                    src={comment.user_details[0].user_picture}
+                  />
+                  <Author_Timestamp>
+                    <Link href={`/user/${comment.user_details[0].auth0_id}`}>
+                      <a>
+                        <p style={{ color: "black", display: "inline-block" }}>
+                          {comment.user_details[0].user_name}
+                        </p>
+                      </a>
+                    </Link>
+                    <p>
+                      {getFormattedDate(comment.comment[0].comment_timestamp)}
+                    </p>
+                  </Author_Timestamp>
+                </LeftDiv>
+                <div style={{ marginLeft: "2rem" }}>
+                  <CommentContent>
+                    {comment.comment[0].comment_content}
+                  </CommentContent>
+                  <EditButtonsDiv comment={true}>
+                    <button
+                      onClick={async () => {
+                        const deletedPost = await axios.delete(
+                          `/api/comments/${comment.comment[0].comment_id}`
+                        );
+                        if (deletedPost.data.status) {
+                          router.reload();
+                        }
+                      }}
+                    >
+                      Delete comment
+                    </button>
+                  </EditButtonsDiv>
+                </div>
                 <UpvoteButton
                   style={{
                     position: "absolute",
