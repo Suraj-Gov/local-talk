@@ -15,7 +15,8 @@ export const ImageContainer = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    background-color: ${(props) => props.image === "NO" && "#D56E6E"};
+    background-color: ${(props) =>
+      props.image === "NO" || (props.image === "" && "#D56E6E")};
     background-image: url(${(props) => props.image});
     filter: blur(3px) saturate(180%);
     background-size: cover;
@@ -47,6 +48,10 @@ export const ImageContainer = styled.div`
     padding: 4.5rem;
     resize: none;
     outline: none;
+
+    &::placeholder {
+      color: #ffffff88;
+    }
   }
 `;
 
@@ -123,7 +128,7 @@ export const CommentTextInput = styled.textarea`
   box-shadow: 10px 10px 20px #12121211;
 `;
 
-export const EditButtonsDiv = styled.div`
+export const PostButtonsDiv = styled.div`
   display: flex;
   position: ${(props) => (props.comment ? "" : "absolute")};
   margin-top: ${(props) => (props.comment ? "1rem" : "")};

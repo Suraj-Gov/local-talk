@@ -14,7 +14,7 @@ import {
   CommentSubmitButton,
   CommentTextInput,
   CommentsContainer,
-  EditButtonsDiv,
+  PostButtonsDiv,
   ImageContainer,
   LeftDiv,
   UserPicture,
@@ -114,7 +114,7 @@ export default function Post({
           textContent={fetchedPost.post_title}
         ></PostTextArea>
         {userDetails && (
-          <EditButtonsDiv>
+          <PostButtonsDiv>
             <button onClick={() => toggleEditable()}>
               {isEditable ? "Save changes" : "Edit post"}
             </button>
@@ -136,7 +136,7 @@ export default function Post({
             {isEditable && (
               <button onClick={() => setIsEditable(null)}>Cancel edit</button>
             )}
-          </EditButtonsDiv>
+          </PostButtonsDiv>
         )}
       </ImageContainer>
       <PostTextArea
