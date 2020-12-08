@@ -14,6 +14,7 @@ export const LocalTalkLeftIcon = styled.h3`
   color: white;
   a {
     font-weight: 700;
+    color: white;
   }
   span {
     display: flex;
