@@ -3,6 +3,7 @@ import Axios from "axios";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
+import Posts from "../../components/Posts";
 
 export default function User({ user, error }) {
   const { logout } = useAuth0();
@@ -24,7 +25,11 @@ export default function User({ user, error }) {
       >
         Logout
       </button>
+      <h1>{user.user[0].user_name}</h1>
+      <img src={user.user[0].user_picture} />
+      {/* <Posts posts={user.posts} /> */}
       <pre>{JSON.stringify(user, null, 2)}</pre>
+      {/* TODO: format each post like this: [post_details], [upvotes = null], [user_details = null] */}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import { PointsButton } from "./PointsButton";
 import { Points } from "../components/Icons";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../context/UserContext";
 import Axios from "axios";
 
@@ -137,36 +137,38 @@ export default function Posts({ posts }) {
     <PostsContainer>
       {posts.map((post) => {
         return (
-          <PostContainer key={post.post_details[0].post_id}>
-            <ImageContainer image={post.post_details[0].post_image}>
-              {post.post_details[0].post_image !== "NO" && (
-                <img src={post.post_details[0].post_image} />
+          <PostContainer key={post.post_details.post_id}>
+            <ImageContainer image={post.post_details.post_image}>
+              {post.post_details.post_image !== "NO" && (
+                <img src={post.post_details.post_image} />
               )}
             </ImageContainer>
             <PostWords>
-              <Link href={`/posts/${post.post_details[0].post_id}`}>
+              <Link href={`/posts/${post.post_details.post_id}`}>
                 <a>
                   <TitleContent>
-                    <h3>{post.post_details[0].post_title}</h3>
-                    <p>{`${post.post_details[0].post_content.slice(0, 128)}${
-                      post.post_details[0].post_content.length > 128
-                        ? "..."
-                        : ""
+                    <h3>{post.post_details.post_title}</h3>
+                    <p>{`${post.post_details.post_content.slice(0, 128)}${
+                      post.post_details.post_content.length > 128 ? "..." : ""
                     }`}</p>
                   </TitleContent>
                 </a>
               </Link>
               <PostAction>
                 <PostDetails>
-                  <Link href={`/user/${post.user_details[0].auth0_id}`}>
-                    <a>{post.user_details[0].user_name}</a>
-                  </Link>
-                  <p>{getFormattedDate(post.post_details[0].post_timestamp)}</p>{" "}
+                  {post.user_details && (
+                    <Link href={`/user/${post.user_details.auth0_id}`}>
+                      <a>{post.user_details.user_name}</a>
+                    </Link>
+                  )}
+                  <p>{getFormattedDate(post.post_details.post_timestamp)}</p>
                 </PostDetails>
-                <UpvoteButton
-                  postId={post.post_details[0].post_id}
-                  data={post.upvotes}
-                ></UpvoteButton>
+                {post.upvotes && (
+                  <UpvoteButton
+                    postId={post.post_details.post_id}
+                    data={post.upvotes}
+                  ></UpvoteButton>
+                )}
               </PostAction>
             </PostWords>
           </PostContainer>

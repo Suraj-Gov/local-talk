@@ -42,7 +42,16 @@ export default function App() {
       const posts = await Axios.get(
         `/api/posts?city=${userDetails.city}&offset=${offset}`
       );
-      setPostsContext(posts.data);
+      // console.log(posts.data);
+      const structuredPosts = posts.data.map((post) => {
+        return {
+          post_details: post.post_details[0],
+          user_details: post.user_details[0],
+          upvotes: post.upvotes,
+        };
+      });
+      console.log(structuredPosts);
+      setPostsContext(structuredPosts);
     }
   }, [userDetails]);
 

@@ -33,6 +33,7 @@ export default async function userHandler(req, res) {
               post_content: post.post_content,
               post_timestamp: post.post_timestamp,
               post_points: post.post_points,
+              post_image: post.post_image,
               location_id: post.location_id,
               city: post.city,
             };
