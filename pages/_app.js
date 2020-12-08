@@ -6,6 +6,7 @@ import PostsContext from "../context/PostsContext";
 import UpvotedContext from "../context/UpvotedContext";
 import NProgress from "nprogress";
 import Router from "next/router";
+import Head from "next/head";
 
 NProgress.configure({
   minimum: 0.3,
@@ -45,6 +46,12 @@ function MyApp({ Component, pageProps }) {
       <UserContext.Provider value={{ userDetails, setUserDetails }}>
         <PostsContext.Provider value={{ posts, setPosts }}>
           <UpvotedContext.Provider value={{ upvoted, setUpvoted }}>
+            <Head>
+              <meta
+                name="viewport"
+                content="initial-scale=1.0, width=device-width"
+              />
+            </Head>
             <Component {...pageProps} />
           </UpvotedContext.Provider>
         </PostsContext.Provider>

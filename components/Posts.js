@@ -12,6 +12,17 @@ const PostsContainer = styled.div`
   width: 85vw;
   margin: 2em auto;
   grid-gap: 6rem;
+
+  @media only screen and (max-width: 600px) {
+    margin: 0;
+    width: 100%;
+    display: block;
+    padding: 1rem;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const PostContainer = styled.div`
@@ -32,6 +43,13 @@ const PostContainer = styled.div`
     transform: translateX(5px) translateY(5px);
   }
   transition: all 0.2s;
+
+  @media only screen and (max-width: 600px) {
+    margin: 3rem 0;
+    &:active {
+      transform: none;
+    }
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -190,7 +208,9 @@ export default function Posts({ posts }) {
         alignItems: "center",
       }}
     >
-      <h1>No posts to show, create a new post!</h1>
+      <h1 style={{ textAlign: "center" }}>
+        No posts to show, create a new post!
+      </h1>
     </div>
   );
 }

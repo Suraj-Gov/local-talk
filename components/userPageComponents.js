@@ -12,4 +12,11 @@ export const UserContainer = styled.div`
   img {
     border-radius: 50%;
   }
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    h1 {
+      margin-top: 2rem;
+      margin-left: 0;
+    }
+  }
 `;

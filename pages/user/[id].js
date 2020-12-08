@@ -15,6 +15,7 @@ import { UserContainer } from "../../components/userPageComponents";
 import {
   Comment,
   CommentContent,
+  CommentContentContainer,
   CommentsContainer,
   LeftDiv,
   UserPicture,
@@ -39,12 +40,6 @@ export default function User({ user, error }) {
   ) : (
     <>
       <HandleUserLoginContainer>
-        <LocalTalkLeftIcon>
-          <span>
-            <ProfileSvg />
-            {user.user[0].user_name}
-          </span>
-        </LocalTalkLeftIcon>
         <NaviButtonsContainer>
           <NaviButton
             onClick={() => {
@@ -81,16 +76,16 @@ export default function User({ user, error }) {
                       src={user.user[0].user_picture}
                     ></UserPicture>
                   </LeftDiv>
-                  <CommentContent style={{ marginLeft: "2em" }}>
-                    {comment.comment_content}
-                  </CommentContent>
+                  <CommentContentContainer>
+                    <CommentContent>{comment.comment_content}</CommentContent>
+                  </CommentContentContainer>
                 </Comment>
               );
             })
           ) : (
             <></>
           )}
-          {user.comments && <h1>User Comments</h1>}
+          {user.comments.length > 0 && <h1>User Comments</h1>}
         </CommentsContainer>
       </div>
     </>

@@ -13,10 +13,10 @@ const AddNewPost = styled.button`
   height: 5rem;
   border-radius: 50%;
   background-color: black;
-  position: absolute;
-  bottom: 5rem;
-  right: 5rem;
+  position: fixed;
   padding: 1rem;
+  right: 3em;
+  bottom: 3em;
 
   &:hover {
     cursor: pointer;
@@ -25,6 +25,13 @@ const AddNewPost = styled.button`
   svg {
     fill: white;
   }
+`;
+
+const LocationH1 = styled.h1`
+  @media only screen and (min-width: 600px) {
+    display: none;
+  }
+  margin: 1rem;
 `;
 
 export default function App() {
@@ -60,7 +67,16 @@ export default function App() {
       {errorInPost || !postsContext ? (
         <pre>{JSON.stringify(errorInPost, null, 2)}</pre>
       ) : (
-        <Posts posts={postsContext} />
+        <>
+          {userDetails && (
+            <LocationH1>
+              {userDetails.city === "NO_CITY"
+                ? "Location unknown"
+                : `You're in ${userDetails.city}`}
+            </LocationH1>
+          )}
+          <Posts posts={postsContext} />
+        </>
       )}
       {userDetails && (
         <Link href="/new-post">

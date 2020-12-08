@@ -18,6 +18,8 @@ import {
   ImageContainer,
   LeftDiv,
   UserPicture,
+  DescriptionTextArea,
+  CommentContentContainer,
 } from "../../components/PostComponents";
 
 function getFormattedDate(dateString) {
@@ -143,18 +145,6 @@ export default function Post({
         textContent={fetchedPost.post_content}
         isEditable={isEditable}
         typeRef={contentRef}
-        style={{
-          border: "none",
-          fontFamily: "Inter, sans-serif",
-          backgroundColor: "#eeeeee",
-          color: "#333333",
-          fontSize: "1.6em",
-          width: "100%",
-          lineHeight: "1.6em",
-          padding: "4.5rem",
-          outline: "none",
-          overflow: "hidden",
-        }}
       ></PostTextArea>
       <CommentsContainer>
         {comments ? (
@@ -179,7 +169,7 @@ export default function Post({
                     </p>
                   </Author_Timestamp>
                 </LeftDiv>
-                <div style={{ marginLeft: "2rem" }}>
+                <CommentContentContainer>
                   <CommentContent>
                     {comment.comment[0].comment_content}
                   </CommentContent>
@@ -197,7 +187,7 @@ export default function Post({
                       Delete comment
                     </button>
                   </EditButtonsDiv>
-                </div>
+                </CommentContentContainer>
                 <UpvoteButton
                   style={{
                     position: "absolute",
@@ -220,8 +210,7 @@ export default function Post({
             <CommentForm>
               <CommentTextInput
                 onKeyUp={(e) => {
-                  e.target.style.height = "1px";
-                  e.target.style.height = `${20 + e.target.scrollHeight}px`;
+                  e.target.style.height = `${e.target.scrollHeight}px`;
                 }}
                 type="text"
                 placeholder="Add a comment"
@@ -376,7 +365,7 @@ function PostTextArea({ typeRef, textContent, isEditable, style }) {
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      typeRef.current.style.height = typeRef.current.scrollHeight + "px";
+      typeRef.current.style.height = 40 + typeRef.current.scrollHeight + "px";
       initialText = textContent;
 
       if (isEditable === null) {
@@ -395,15 +384,16 @@ function PostTextArea({ typeRef, textContent, isEditable, style }) {
   }
 
   return (
-    <textarea
+    <DescriptionTextArea
       onKeyUp={(e) => {
-        e.target.style.height = "1px";
-        e.target.style.height = `${20 + e.target.scrollHeight}px`;
+        style && window.scrollBy(0, e.target.scrollHeight);
+        e.target.style.height = `${e.target.scrollHeight}px`;
       }}
+      contentEditable={isEditable}
       ref={typeRef}
       style={{ caretColor: !isEditable && "transparent", ...style }}
       value={text}
       onChange={(e) => handleChange(e)}
-    ></textarea>
+    ></DescriptionTextArea>
   );
 }

@@ -49,6 +49,7 @@ export const NaviButton = styled.button`
   a {
     display: flex;
     flex-direction: row;
+    color: black;
   }
 
   svg {

@@ -52,7 +52,6 @@ export default function HandleUserLogin() {
         const defaultUserLocation = {
           city: "NO_CITY",
         };
-        await axios.post(`/api/locations`, newLocation);
         profile = { ...profile, ...defaultUserLocation };
         setUserDetails({ ...userDetails, ...profile });
       }
@@ -103,12 +102,14 @@ export default function HandleUserLogin() {
           <NaviButton>
             <Link href={`/user/${userDetails.auth0_id}`}>
               <a>
-                {<ProfileSvg />}
-                <p>Profile</p>
+                <span>
+                  {<ProfileSvg />}
+                  <p>Profile</p>
+                </span>
               </a>
             </Link>
           </NaviButton>
-          <NaviButton>
+          <NaviButton style={{ display: "none" }}>
             <span>
               {<Location />}
               {userDetails.city}

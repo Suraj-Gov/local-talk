@@ -48,6 +48,10 @@ export const ImageContainer = styled.div`
     padding: 4.5rem;
     resize: none;
     outline: none;
+    @media only screen and (max-width: 600px) {
+      font-size: 1.7em;
+      padding: 2rem;
+    }
 
     &::placeholder {
       color: #ffffff88;
@@ -59,6 +63,9 @@ export const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
   padding: 10rem;
+  @media only screen and (max-width: 600px) {
+    padding: 1rem;
+  }
 `;
 
 export const Comment = styled.div`
@@ -70,6 +77,9 @@ export const Comment = styled.div`
   box-shadow: 10px 10px 20px #12121211;
   display: flex;
   flex-direction: row;
+  @media only screen and (max-width: 600px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 export const Author_Timestamp = styled.div`
@@ -84,12 +94,19 @@ export const Author_Timestamp = styled.div`
     font-weight: 300;
     color: #454545;
   }
+  @media only screen and (max-width: 600px) {
+    text-align: left;
+  }
 `;
 
 export const CommentContent = styled.p`
   line-height: 1.5em;
   font-weight: 500;
   font-size: 1.4em;
+  @media only screen and (max-width: 600px) {
+    font-size: 1em;
+    line-height: 1.2em;
+  }
 `;
 
 export const CommentForm = styled.form`
@@ -98,6 +115,10 @@ export const CommentForm = styled.form`
   justify-content: space-between;
   align-items: flex-start;
   margin: 0 1rem;
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-end;
+  }
 `;
 
 export const CommentSubmitButton = styled.button`
@@ -111,6 +132,9 @@ export const CommentSubmitButton = styled.button`
   font-size: 1.2em;
   background-color: #dddddd;
   margin-left: 2rem;
+  @media only screen and (max-width: 600px) {
+    margin-top: 1rem;
+  }
 `;
 
 export const CommentTextInput = styled.textarea`
@@ -136,6 +160,9 @@ export const EditButtonsDiv = styled.div`
   z-index: 200;
   bottom: 1rem;
   left: 4.5rem;
+  @media only screen and (max-width: 600px) {
+    left: 2rem;
+  }
 
   button {
     display: inline-block;
@@ -165,8 +192,41 @@ export const LeftDiv = styled.div`
   flex-direction: column;
   align-items: center;
   width: 9em;
+  @media only screen and (max-width: 600px) {
+    width: 0em;
+  }
 `;
 
 export const UserPicture = styled.img`
   border-radius: 50%;
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+`;
+
+export const DescriptionTextArea = styled.textarea`
+  border: none;
+  font-family: "Inter", sans-serif;
+  background-color: #eeeeee;
+  color: #333333;
+  font-size: 1.6em;
+  width: 100%;
+  line-height: 1.6em;
+  padding: 4.5em;
+  outline: none;
+  overflow: hidden;
+  @media only screen and (max-width: 600px) {
+    font-size: 1em;
+    line-height: 1.4em;
+    padding: 2em;
+  }
+
+  overflow: hidden;
+`;
+
+export const CommentContentContainer = styled.div`
+  margin-left: 2em;
+  @media only screen and (max-width: 600px) {
+    margin: 0;
+  }
 `;

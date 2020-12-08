@@ -2,7 +2,11 @@ import Axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
-import { ImageContainer, PostButtonsDiv } from "../components/PostComponents";
+import {
+  DescriptionTextArea,
+  EditButtonsDiv,
+  ImageContainer,
+} from "../components/PostComponents";
 import UserContext from "../context/UserContext";
 import styled from "styled-components";
 
@@ -18,6 +22,15 @@ const ImageInput = styled.input`
   position: absolute;
   top: 4.5rem;
   border-radius: 10px;
+  &::placeholder {
+    color: black;
+    opacity: 40%;
+  }
+  @media only screen and (max-width: 600px) {
+    top: 1.5rem;
+    left: 0;
+    right: 0;
+  }
 `;
 
 export default function newPost() {
@@ -70,14 +83,20 @@ export default function newPost() {
           <textarea
             placeholder={"Title"}
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+            onKeyUp={(e) => {
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
           ></textarea>
           <ImageInput
+            placeholder="Unsplash Image URL"
             type="url"
             ref={imageRef}
             onChange={(e) => setImageURL(e.target.value)}
           />
-          <PostButtonsDiv>
+          <EditButtonsDiv>
             {title && (
               <button type="submit" onClick={(e) => submitPost(e)}>
                 Save Post
@@ -88,28 +107,18 @@ export default function newPost() {
             >
               Cancel Post
             </button>
-          </PostButtonsDiv>
+          </EditButtonsDiv>
         </ImageContainer>
-        <textarea
+        <DescriptionTextArea
           placeholder={"Description"}
           onChange={(e) => setContent(e.target.value)}
           onKeyUp={(e) => {
-            e.target.style.height = "1px";
-            e.target.style.height = `${20 + e.target.scrollHeight}px`;
+            e.preventDefault();
+            // e.target.style.height = "max-content";
+            window.scrollBy(0, e.target.scrollHeight);
+            e.target.style.height = `${e.target.scrollHeight}px`;
           }}
-          style={{
-            border: "none",
-            fontFamily: "Inter, sans-serif",
-            backgroundColor: "#eeeeee",
-            color: "#333333",
-            fontSize: "1.6em",
-            width: "100%",
-            lineHeight: "1.6em",
-            padding: "4.5rem",
-            outline: "none",
-            overflow: "hidden",
-          }}
-        ></textarea>
+        ></DescriptionTextArea>
       </article>
     </form>
   ) : (

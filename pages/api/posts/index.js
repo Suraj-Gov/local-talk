@@ -37,7 +37,13 @@ export default async function PostsHandler(req, res) {
         } = req.body;
         const newPost = await pool.query(
           "INSERT INTO posts (post_title, post_content, post_author, post_location, post_image) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-          [post_title, post_content, post_author, post_location, post_image]
+          [
+            post_title,
+            post_content,
+            post_author,
+            post_location ? post_location : 0,
+            post_image,
+          ]
         );
         console.log(newPost.rows[0], "inserted new post to db");
         res.json(newPost.rows[0]);
