@@ -9,6 +9,13 @@ export default function User({ user, error }) {
   const { logout } = useAuth0();
   const { setUserDetails } = useContext(UserContext);
   const router = useRouter();
+  const posts = user.posts.map((post) => {
+    return {
+      post_details: {
+        ...post,
+      },
+    };
+  });
 
   return error === "ERR" ? (
     <h1>Error</h1>
@@ -27,9 +34,8 @@ export default function User({ user, error }) {
       </button>
       <h1>{user.user[0].user_name}</h1>
       <img src={user.user[0].user_picture} />
-      {/* <Posts posts={user.posts} /> */}
+      <Posts posts={posts} />
       <pre>{JSON.stringify(user, null, 2)}</pre>
-      {/* TODO: format each post like this: [post_details], [upvotes = null], [user_details = null] */}
     </div>
   );
 }

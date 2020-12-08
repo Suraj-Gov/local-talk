@@ -128,7 +128,7 @@ export const CommentTextInput = styled.textarea`
   box-shadow: 10px 10px 20px #12121211;
 `;
 
-export const PostButtonsDiv = styled.div`
+export const EditButtonsDiv = styled.div`
   display: flex;
   position: ${(props) => (props.comment ? "" : "absolute")};
   margin-top: ${(props) => (props.comment ? "1rem" : "")};

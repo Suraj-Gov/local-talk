@@ -50,7 +50,6 @@ export default function App() {
           upvotes: post.upvotes,
         };
       });
-      console.log(structuredPosts);
       setPostsContext(structuredPosts);
     }
   }, [userDetails]);
