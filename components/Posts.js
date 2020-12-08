@@ -25,6 +25,13 @@ const PostContainer = styled.div`
   a {
     color: black;
   }
+  &:hover {
+    box-shadow: 4px 4px 29px rgba(47, 47, 47, 0.35);
+  }
+  &:active {
+    transform: translateX(5px) translateY(5px);
+  }
+  transition: all 0.2s;
 `;
 
 const ImageContainer = styled.div`

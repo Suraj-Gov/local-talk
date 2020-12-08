@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const PointsButton = styled.button`
+  outline: none;
   color: ${(props) => (props.disabled ? "#bbbbbb" : "#000000")};
   border: none;
   padding: 10px;
@@ -24,4 +25,8 @@ export const PointsButton = styled.button`
   &:hover {
     cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
+  &:active {
+    transform: translateY(10px);
+  }
+  transition: all 0.2s ease-in-out;
 `;
