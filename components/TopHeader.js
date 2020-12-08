@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 export const LocalTalkLeftIcon = styled.h3`
+  svg {
+    fill: white;
+  }
   display: inline-block;
   margin: 0;
   padding: 0.6em 0.85em;
@@ -8,9 +11,19 @@ export const LocalTalkLeftIcon = styled.h3`
   background-color: black;
   font-size: 1.3em;
   text-decoration: none;
+  color: white;
   a {
     font-weight: 700;
-    color: white;
+  }
+  span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    svg {
+      width: 1.5em;
+      margin-right: 0.5rem;
+    }
   }
 `;
 

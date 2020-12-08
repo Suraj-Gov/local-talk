@@ -161,14 +161,7 @@ export default function Post({
           comments.map((comment) => {
             return (
               <Comment key={comment.comment[0].comment_id}>
-                <LeftDiv
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    width: "9em",
-                  }}
-                >
+                <LeftDiv>
                   <UserPicture
                     style={{ borderRadius: "50%" }}
                     src={comment.user_details[0].user_picture}

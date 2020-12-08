@@ -161,6 +161,10 @@ export const LeftDiv = styled.div`
   flex-direction: column;
   align-items: center;
   width: "9em";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 9em;
 `;
 
 export const UserPicture = styled.img`
