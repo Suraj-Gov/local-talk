@@ -12,6 +12,7 @@ const PostsContainer = styled.div`
   width: 85vw;
   margin: 2em auto;
   grid-gap: 6rem;
+  padding-bottom: 10rem;
 
   @media only screen and (max-width: 600px) {
     margin: 0;
