@@ -30,7 +30,18 @@ export default function HandleUserLogin() {
         const userLocationFetch = await axios.get(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}&zoom=18&addressdetails=1`
         );
-        const userCity = userLocationFetch.data.address.city;
+        if (userLocationFetch.data.error === "Unable to geocode") {
+          alert("Your location cannot be determined");
+          setUserDetails(null);
+          return;
+        }
+        let userCity = userLocationFetch.data.address.city;
+        if (userCity === undefined) {
+          userCity = userLocationFetch.data.address.village;
+          if (userCity === undefined) {
+            userCity = userLocationFetch.data.display_name;
+          }
+        }
         const userLocation = await axios.get(`/api/locations/${userCity}`);
         if (userLocation.data.message === "location not found") {
           const newLocation = {
@@ -40,7 +51,7 @@ export default function HandleUserLogin() {
             `/api/locations`,
             newLocation
           );
-          profile = { ...profile, ...sendNewLocation };
+          profile = { ...profile, ...sendNewLocation.data };
         } else {
           profile = { ...profile, ...userLocation.data };
         }
