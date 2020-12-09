@@ -51,7 +51,7 @@ export default function User({ user, error }) {
             userDetails.auth0_id === user.user[0].auth0_id && (
               <NaviButton
                 onClick={() => {
-                  logout();
+                  logout({ returnTo: window.location.origin });
                   setUserDetails(null);
                   localStorage.removeItem("userDetails");
                 }}
