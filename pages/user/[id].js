@@ -20,10 +20,11 @@ import {
   LeftDiv,
   UserPicture,
 } from "../../components/PostComponents";
+import Link from "next/link";
 
 export default function User({ user, error }) {
   const { logout } = useAuth0();
-  const { setUserDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const router = useRouter();
   const posts = user.posts.map((post) => {
     return {
@@ -40,16 +41,24 @@ export default function User({ user, error }) {
   ) : (
     <>
       <HandleUserLoginContainer>
+        <LocalTalkLeftIcon>
+          <Link href="/">
+            <a> LocalTalk</a>
+          </Link>
+        </LocalTalkLeftIcon>
         <NaviButtonsContainer>
-          <NaviButton
-            onClick={() => {
-              logout();
-              setUserDetails(null);
-              localStorage.removeItem("userDetails");
-            }}
-          >
-            <span>Logout</span>
-          </NaviButton>
+          {userDetails !== null &&
+            userDetails.auth0_id === user.user[0].auth0_id && (
+              <NaviButton
+                onClick={() => {
+                  logout();
+                  setUserDetails(null);
+                  localStorage.removeItem("userDetails");
+                }}
+              >
+                <span>Logout</span>
+              </NaviButton>
+            )}
         </NaviButtonsContainer>
       </HandleUserLoginContainer>
       <div>
