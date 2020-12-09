@@ -109,7 +109,7 @@ export default function HandleUserLogin() {
               </a>
             </Link>
           </NaviButton>
-          <NaviButton style={{ display: "none" }}>
+          <NaviButton hideOnMobile={true}>
             <span>
               {<Location />}
               {userDetails.city}

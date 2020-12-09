@@ -57,6 +57,10 @@ export const NaviButton = styled.button`
     width: 1em;
     margin-right: 0.5em;
   }
+
+  @media only screen and (max-width: 600px) {
+    display: ${(props) => props.hideOnMobile === true && "none"};
+  }
 `;
 
 export const NaviButtonsContainer = styled.div`
