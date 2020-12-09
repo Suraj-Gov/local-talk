@@ -37,9 +37,9 @@ function MyApp({ Component, pageProps }) {
       domain={process.env.NEXT_PUBLIC_DOMAIN}
       clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
       redirectUri={
-        process.env.NODE_ENV !== "production"
-          ? process.env.NEXT_PUBLIC_LOCALBASE_URL
-          : process.env.NEXT_PUBLIC_VERCEL_URL
+        process.env.NODE_ENV === "production"
+          ? process.env.NEXT_PUBLIC_VERCEL_URL
+          : process.env.NEXT_PUBLIC_LOCALBASE_URL
       }
       cacheLocation="localstorage"
     >
