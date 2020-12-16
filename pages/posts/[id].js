@@ -115,7 +115,7 @@ export default function Post({
           isEditable={isEditable}
           textContent={fetchedPost.post_title}
         ></PostTextArea>
-        {userDetails && (
+        {userDetails && userDetails.user_id === fetchedPost.post_author && (
           <EditButtonsDiv>
             <button onClick={() => toggleEditable()}>
               {isEditable ? "Save changes" : "Edit post"}
