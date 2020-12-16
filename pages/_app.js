@@ -28,7 +28,6 @@ function MyApp({ Component, pageProps }) {
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
     if (userDetails !== null) {
       setUserDetails(userDetails);
-      console.log(userDetails);
     }
   }, []);
 

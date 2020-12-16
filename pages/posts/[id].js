@@ -174,18 +174,21 @@ export default function Post({
                     {comment.comment[0].comment_content}
                   </CommentContent>
                   <EditButtonsDiv comment={true}>
-                    <button
-                      onClick={async () => {
-                        const deletedPost = await axios.delete(
-                          `/api/comments/${comment.comment[0].comment_id}`
-                        );
-                        if (deletedPost.data.status) {
-                          router.reload();
-                        }
-                      }}
-                    >
-                      Delete comment
-                    </button>
+                    {userDetails.user_name ===
+                      comment.user_details[0].user_name && (
+                      <button
+                        onClick={async () => {
+                          const deletedPost = await axios.delete(
+                            `/api/comments/${comment.comment[0].comment_id}`
+                          );
+                          if (deletedPost.data.status) {
+                            router.reload();
+                          }
+                        }}
+                      >
+                        Delete comment
+                      </button>
+                    )}
                   </EditButtonsDiv>
                 </CommentContentContainer>
                 <UpvoteButton
@@ -313,7 +316,7 @@ function UpvoteButton({ userDetails, data, commentId, postId }) {
           return;
         }
       } catch (err) {
-        console.error(err);
+        console.error(err, "error");
       }
     } else {
       // upvoting
@@ -333,7 +336,7 @@ function UpvoteButton({ userDetails, data, commentId, postId }) {
           return;
         }
       } catch (err) {
-        console.error(err);
+        console.error(err, "error");
       }
     }
   }
@@ -365,7 +368,7 @@ function PostTextArea({ typeRef, textContent, isEditable, style }) {
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      typeRef.current.style.height = 40 + typeRef.current.scrollHeight + "px";
+      typeRef.current.style.height = typeRef.current.scrollHeight + "px";
       initialText = textContent;
 
       if (isEditable === null) {
