@@ -80,5 +80,7 @@ export default async function CommentHandler(req, res) {
     default:
       res.status(405);
       res.json({ status: "error" });
+      break;
   }
+  pool.end().then(() => console.log("connection terminated"));
 }

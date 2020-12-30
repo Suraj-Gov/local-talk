@@ -30,4 +30,5 @@ export default async function locationsHandler(req, res) {
     default:
       res.status(405);
   }
+  pool.end().then(() => console.log("connection terminated"));
 }

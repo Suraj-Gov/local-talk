@@ -39,4 +39,5 @@ export default async function UpvotedHandler(req, res) {
       return;
     }
   }
+  pool.end().then(() => console.log("connection terminated"));
 }
