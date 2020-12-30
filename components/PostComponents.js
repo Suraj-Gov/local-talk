@@ -16,7 +16,7 @@ export const ImageContainer = styled.div`
     top: 0;
     left: 0;
     background-color: ${(props) =>
-      props.image === "NO" || (props.image === "" && "#D56E6E")};
+      props.image === "NO" ? "#D56E6E" : "#FFFFFF"};
     background-image: url(${(props) => props.image});
     filter: blur(3px) saturate(180%);
     background-size: cover;
