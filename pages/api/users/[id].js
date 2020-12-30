@@ -4,7 +4,7 @@
 // PUT :auth0_id upvotes a single user needs - upvote: true
 // PUT :auth0_id downvotes a single user needs - upvote: false
 
-const client = require("../../../lib/db");
+const db = require("../../../lib/db");
 
 export default async function userHandler(req, res) {
   const { method } = req;
@@ -13,16 +13,16 @@ export default async function userHandler(req, res) {
     case "GET":
       try {
         const auth0_id = req.query.id;
-        const getUser = await client.query(
+        const getUser = await db.query(
           "SELECT * FROM users WHERE auth0_id = ($1)",
           [auth0_id]
         );
         if (req.query.all === "1") {
-          const getPosts = await client.query(
+          const getPosts = await db.query(
             "select * from users inner join posts p on users.user_id = p.post_author inner join locations l on p.post_location = l.location_id where auth0_id=($1)",
             [auth0_id]
           );
-          const getComments = await client.query(
+          const getComments = await db.query(
             "SELECT * FROM users INNER JOIN comments c ON users.user_id = c.comment_author  WHERE auth0_id=($1)",
             [auth0_id]
           );
@@ -72,7 +72,7 @@ export default async function userHandler(req, res) {
     case "DELETE":
       try {
         const id = req.query.id;
-        const deleteUser = await client.query(
+        const deleteUser = await db.query(
           "DELETE FROM users WHERE user_id = ($1) RETURNING *",
           [parseInt(id)]
         );

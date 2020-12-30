@@ -3,7 +3,7 @@
 // GET gets all posts from city needs a url query - city
 // POST adds a single post needs - post_title, post_content, post_author, post_location
 
-import client from "../../../lib/db";
+import db from "../../../lib/db";
 
 export default async function PostsHandler(req, res) {
   const { method } = req;
@@ -14,7 +14,7 @@ export default async function PostsHandler(req, res) {
         const city = req.query.city;
         const offset = req.query.offset;
         console.log(offset);
-        const posts = await client.query(
+        const posts = await db.query(
           "SELECT json_agg(p) AS post_details, json_agg(users) AS user_details, json_agg(u) AS upvotes FROM posts p LEFT JOIN upvoted u ON p.post_id = u.upvoted_post INNER JOIN users ON p.post_author = users.user_id INNER JOIN locations l ON p.post_location = l.location_id WHERE l.city = ($1) GROUP BY p OFFSET($2) LIMIT 10",
           [city, offset]
         );
@@ -35,7 +35,7 @@ export default async function PostsHandler(req, res) {
           post_location,
           post_image,
         } = req.body;
-        const newPost = await client.query(
+        const newPost = await db.query(
           "INSERT INTO posts (post_title, post_content, post_author, post_location, post_image) VALUES ($1, $2, $3, $4, $5) RETURNING *",
           [
             post_title,

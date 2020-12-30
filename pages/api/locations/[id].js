@@ -2,7 +2,7 @@
 
 // GET :city sends city and location_id
 
-const client = require("../../../lib/db");
+const db = require("../../../lib/db");
 
 export default async function locationsHandler(req, res) {
   const { method } = req;
@@ -11,7 +11,7 @@ export default async function locationsHandler(req, res) {
     case "GET":
       try {
         const city = req.query.id;
-        const getLocation = await client.query(
+        const getLocation = await db.query(
           "SELECT * FROM locations WHERE city = ($1)",
           [city]
         );
