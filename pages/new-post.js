@@ -44,7 +44,6 @@ export default function newPost() {
 
   useEffect(async () => {
     if (imageURL.slice(0, 28) === "https://unsplash.com/photos/") {
-      console.log(process.env.NEXT_PUBLIC_UNSPLASH_KEY);
       try {
         const getImageURL = await Axios.get(
           `https://api.unsplash.com/photos/${imageURL.slice(28)}?client_id=${
