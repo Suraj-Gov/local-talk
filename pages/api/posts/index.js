@@ -56,4 +56,5 @@ export default async function PostsHandler(req, res) {
     default:
       res.status(405);
   }
+  pool.end().then(() => console.log("connection terminated"));
 }

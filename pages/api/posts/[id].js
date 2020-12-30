@@ -60,4 +60,5 @@ export default async function PostsHandler(req, res) {
       }
       break;
   }
+  pool.end().then(() => console.log("connection terminated"));
 }
