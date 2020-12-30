@@ -29,5 +29,4 @@ export default async function CommentsHandler(req, res) {
       res.status(405);
       res.json({ status: "error" });
   }
-  pool.end().then(() => console.log("connection terminated"));
 }

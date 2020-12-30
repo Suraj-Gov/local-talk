@@ -41,5 +41,4 @@ export default async function userHandler(req, res) {
       res.status(405);
       break;
   }
-  pool.end().then(() => console.log("connection terminated"));
 }
