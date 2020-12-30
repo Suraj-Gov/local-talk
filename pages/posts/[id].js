@@ -1,4 +1,3 @@
-import auth0 from "@auth0/auth0-react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState, useRef } from "react";
@@ -6,6 +5,7 @@ import UserContext from "../../context/UserContext";
 import { Points } from "../../components/Icons";
 import { PointsButton } from "../../components/PointsButton";
 import Link from "next/link";
+import Head from "next/head";
 import {
   Author_Timestamp,
   Comment,
@@ -101,136 +101,155 @@ export default function Post({
   };
 
   return error === "ERR" ? (
-    <h1>Something went wrong 😐, please refresh.</h1>
+    <>
+      <Head>
+        <title>Oh crap. Something went wrong.</title>
+      </Head>
+      <h1>Something went wrong 😐, please refresh.</h1>
+    </>
   ) : router.isFallback ? (
     <h1>Loading...</h1>
   ) : (
-    <article style={{ backgroundColor: "#eee" }}>
-      <ImageContainer image={fetchedPost.post_image}>
-        {fetchedPost.post_image !== "NO" && (
-          <img src={fetchedPost.post_image} />
-        )}
-        <PostTextArea
-          typeRef={titleRef}
-          isEditable={isEditable}
-          textContent={fetchedPost.post_title}
-        ></PostTextArea>
-        {userDetails && userDetails.user_id === fetchedPost.post_author && (
-          <EditButtonsDiv>
-            <button onClick={() => toggleEditable()}>
-              {isEditable ? "Save changes" : "Edit post"}
-            </button>
-            <button
-              onClick={async () => {
-                const canDelete = confirm("Do you want to delete this post?");
-                if (canDelete) {
-                  const deletePost = await axios.delete(
-                    `/api/posts/${fetchedPost.post_id}`
-                  );
-                  if (deletePost.status) {
-                    router.push("/");
-                  }
-                } else return;
-              }}
-            >
-              Delete post
-            </button>
-            {isEditable && (
-              <button onClick={() => setIsEditable(null)}>Cancel edit</button>
-            )}
-          </EditButtonsDiv>
-        )}
-      </ImageContainer>
-      <PostTextArea
-        textContent={fetchedPost.post_content}
-        isEditable={isEditable}
-        typeRef={contentRef}
-      ></PostTextArea>
-      <CommentsContainer>
-        {comments ? (
-          comments.map((comment) => {
-            return (
-              <Comment key={comment.comment[0].comment_id}>
-                <LeftDiv>
-                  <UserPicture
-                    style={{ borderRadius: "50%" }}
-                    src={comment.user_details[0].user_picture}
-                  />
-                  <Author_Timestamp>
-                    <Link href={`/user/${comment.user_details[0].auth0_id}`}>
-                      <a>
-                        <p style={{ color: "black", display: "inline-block" }}>
-                          {comment.user_details[0].user_name}
-                        </p>
-                      </a>
-                    </Link>
-                    <p>
-                      {getFormattedDate(comment.comment[0].comment_timestamp)}
-                    </p>
-                  </Author_Timestamp>
-                </LeftDiv>
-                <CommentContentContainer>
-                  <CommentContent>
-                    {comment.comment[0].comment_content}
-                  </CommentContent>
-                  <EditButtonsDiv comment={true}>
-                    {userDetails.user_name ===
-                      comment.user_details[0].user_name && (
-                      <button
-                        onClick={async () => {
-                          const deletedPost = await axios.delete(
-                            `/api/comments/${comment.comment[0].comment_id}`
-                          );
-                          if (deletedPost.data.status) {
-                            router.reload();
-                          }
-                        }}
-                      >
-                        Delete comment
-                      </button>
-                    )}
-                  </EditButtonsDiv>
-                </CommentContentContainer>
-                <UpvoteButton
-                  style={{
-                    position: "absolute",
-                    right: "2rem",
-                    bottom: "2rem",
-                  }}
-                  postId={fetchedPost.post_id}
-                  data={comment.upvotes}
-                  userDetails={userDetails}
-                  commentId={comment.comment[0].comment_id}
-                ></UpvoteButton>
-              </Comment>
-            );
-          })
-        ) : (
-          <h1>Loading Comments</h1>
-        )}
-        {userDetails ? (
-          <>
-            <CommentForm>
-              <CommentTextInput
-                onKeyUp={(e) => {
-                  e.target.style.height = `${e.target.scrollHeight}px`;
+    <>
+      <Head>
+        <title>{fetchedPost.post_title.slice(0, 32) + "..."}</title>
+      </Head>
+      <article style={{ backgroundColor: "#eee" }}>
+        <ImageContainer image={fetchedPost.post_image}>
+          {fetchedPost.post_image !== "NO" && (
+            <img src={fetchedPost.post_image} />
+          )}
+          <PostTextArea
+            typeRef={titleRef}
+            isEditable={isEditable}
+            textContent={fetchedPost.post_title}
+          ></PostTextArea>
+          {userDetails && userDetails.user_id === fetchedPost.post_author && (
+            <EditButtonsDiv>
+              <button
+                name={isEditable ? "Save changes" : "Edit post"}
+                onClick={() => toggleEditable()}
+              >
+                {isEditable ? "Save changes" : "Edit post"}
+              </button>
+              <button
+                name="Delete post"
+                onClick={async () => {
+                  const canDelete = confirm("Do you want to delete this post?");
+                  if (canDelete) {
+                    const deletePost = await axios.delete(
+                      `/api/posts/${fetchedPost.post_id}`
+                    );
+                    if (deletePost.status) {
+                      router.push("/");
+                    }
+                  } else return;
                 }}
-                type="text"
-                placeholder="Add a comment"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
+              >
+                Delete post
+              </button>
+              {isEditable && (
+                <button name="Cancel edit" onClick={() => setIsEditable(null)}>
+                  Cancel edit
+                </button>
+              )}
+            </EditButtonsDiv>
+          )}
+        </ImageContainer>
+        <PostTextArea
+          textContent={fetchedPost.post_content}
+          isEditable={isEditable}
+          typeRef={contentRef}
+        ></PostTextArea>
+        <CommentsContainer>
+          {comments ? (
+            comments.map((comment) => {
+              return (
+                <Comment key={comment.comment[0].comment_id}>
+                  <LeftDiv>
+                    <UserPicture
+                      style={{ borderRadius: "50%" }}
+                      src={comment.user_details[0].user_picture}
+                    />
+                    <Author_Timestamp>
+                      <Link href={`/user/${comment.user_details[0].auth0_id}`}>
+                        <a>
+                          <p
+                            style={{ color: "black", display: "inline-block" }}
+                          >
+                            {comment.user_details[0].user_name}
+                          </p>
+                        </a>
+                      </Link>
+                      <p>
+                        {getFormattedDate(comment.comment[0].comment_timestamp)}
+                      </p>
+                    </Author_Timestamp>
+                  </LeftDiv>
+                  <CommentContentContainer>
+                    <CommentContent>
+                      {comment.comment[0].comment_content}
+                    </CommentContent>
+                    <EditButtonsDiv comment={true}>
+                      {userDetails.user_name ===
+                        comment.user_details[0].user_name && (
+                        <button
+                          name="Delete post"
+                          onClick={async () => {
+                            const deletedPost = await axios.delete(
+                              `/api/comments/${comment.comment[0].comment_id}`
+                            );
+                            if (deletedPost.data.status) {
+                              router.reload();
+                            }
+                          }}
+                        >
+                          Delete comment
+                        </button>
+                      )}
+                    </EditButtonsDiv>
+                  </CommentContentContainer>
+                  <UpvoteButton
+                    style={{
+                      position: "absolute",
+                      right: "2rem",
+                      bottom: "2rem",
+                    }}
+                    postId={fetchedPost.post_id}
+                    data={comment.upvotes}
+                    userDetails={userDetails}
+                    commentId={comment.comment[0].comment_id}
+                  ></UpvoteButton>
+                </Comment>
+              );
+            })
+          ) : (
+            <h1>Loading Comments</h1>
+          )}
+          {userDetails ? (
+            <>
+              <CommentForm>
+                <CommentTextInput
+                  onKeyUp={(e) => {
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                  }}
+                  type="text"
+                  placeholder="Add a comment"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
 
-              <CommentSubmitButton onClick={(e) => submitComment(e)}>
-                Submit comment
-              </CommentSubmitButton>
-            </CommentForm>
-          </>
-        ) : (
-          <></>
-        )}
-      </CommentsContainer>
-    </article>
+                <CommentSubmitButton onClick={(e) => submitComment(e)}>
+                  Submit comment
+                </CommentSubmitButton>
+              </CommentForm>
+            </>
+          ) : (
+            <></>
+          )}
+        </CommentsContainer>
+      </article>
+    </>
   );
 }
 
@@ -343,6 +362,7 @@ function UpvoteButton({ userDetails, data, commentId, postId }) {
 
   return (
     <PointsButton
+      name="Upvote"
       upvoted={isUpvoted}
       disabled={userDetails === null}
       style={{

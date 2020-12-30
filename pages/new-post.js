@@ -9,6 +9,7 @@ import {
 } from "../components/PostComponents";
 import UserContext from "../context/UserContext";
 import styled from "styled-components";
+import Head from "next/head";
 
 const ImageInput = styled.input`
   padding: 10px;
@@ -122,13 +123,18 @@ export default function newPost() {
       </article>
     </form>
   ) : (
-    <center>
-      <h1>You've not logged in</h1>
-      <Link href="/">
-        <a>
-          <button>GO HOME</button>
-        </a>
-      </Link>
-    </center>
+    <>
+      <Head>
+        <title>New Post - Local-Talk</title>
+      </Head>
+      <center>
+        <h1>You've not logged in</h1>
+        <Link href="/">
+          <a>
+            <button>GO HOME</button>
+          </a>
+        </Link>
+      </center>
+    </>
   );
 }

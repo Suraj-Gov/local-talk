@@ -1,4 +1,5 @@
 import App from "./App";
+import Head from "next/head";
 
 export default function Home() {
   return (
@@ -12,7 +13,12 @@ export default function Home() {
     //   }
     //   cacheLocation="localstorage"
     // >
-    <App />
+    <>
+      <Head>
+        <title>Home - Local-Talk</title>
+      </Head>
+      <App />
+    </>
     // </Auth0Provider>
   );
 }

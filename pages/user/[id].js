@@ -21,6 +21,7 @@ import {
   UserPicture,
 } from "../../components/PostComponents";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function User({ user, error }) {
   const { logout } = useAuth0();
@@ -40,6 +41,9 @@ export default function User({ user, error }) {
     <h1>Loading...</h1>
   ) : (
     <>
+      <Head>
+        <title>Profile - Local-Talk</title>
+      </Head>
       <HandleUserLoginContainer>
         <LocalTalkLeftIcon>
           <Link href="/">
