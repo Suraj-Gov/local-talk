@@ -3,7 +3,7 @@
 // GET all locations
 // POST add a new location needs - city
 
-import client from "../../../lib/db";
+import db from "../../../lib/db";
 
 export default async function locationsHandler(req, res) {
   const { method } = req;
@@ -11,7 +11,7 @@ export default async function locationsHandler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const locations = await client.query(
+        const locations = await db.query(
           "SELECT * FROM locations ORDER BY location_id"
         );
         console.log(locations.rows, "got these for all locations");
@@ -25,7 +25,7 @@ export default async function locationsHandler(req, res) {
     case "POST":
       try {
         const { city } = req.body;
-        const newLocation = await client.query(
+        const newLocation = await db.query(
           "INSERT INTO locations (city) VALUES ($1) RETURNING *",
           [city]
         );

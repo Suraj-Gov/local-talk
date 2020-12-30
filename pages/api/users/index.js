@@ -3,7 +3,7 @@
 // GET fetches all users ordered by their user_id
 // POST creates a new user needs - user_name, user_email, auth0_id
 
-import client from "../../../lib/db";
+import db from "../../../lib/db";
 
 export default async function userHandler(req, res) {
   const { method } = req;
@@ -12,9 +12,7 @@ export default async function userHandler(req, res) {
     case "GET":
       console.log(req.query);
       try {
-        const users = await client.query(
-          "SELECT * FROM users ORDER BY user_id"
-        );
+        const users = await db.query("SELECT * FROM users ORDER BY user_id");
         console.log(users.rows, "got these for all users");
         res.json(users.rows);
       } catch (error) {
@@ -26,7 +24,7 @@ export default async function userHandler(req, res) {
     case "POST":
       try {
         const { user_name, user_email, auth0_id, user_picture } = req.body;
-        const newUser = await client.query(
+        const newUser = await db.query(
           "INSERT INTO users (user_name, user_email, auth0_id, user_picture) VALUES ($1, $2, $3, $4) RETURNING *",
           [user_name, user_email, auth0_id, user_picture]
         );

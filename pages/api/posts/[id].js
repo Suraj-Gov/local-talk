@@ -6,7 +6,7 @@
 // PUT :post_id downvotes a single post needs - upvote: false, userId, postId, commentId
 // DELETE :post_id deletes a single post
 
-import client from "../../../lib/db";
+import db from "../../../lib/db";
 
 export default async function PostsHandler(req, res) {
   const { method } = req;
@@ -15,7 +15,7 @@ export default async function PostsHandler(req, res) {
     case "GET":
       try {
         const post_id = req.query.id;
-        const getPost = await client.query(
+        const getPost = await db.query(
           "SELECT * FROM posts INNER JOIN locations l ON posts.post_location = l.location_id WHERE post_id = ($1)",
           [post_id]
         );
@@ -32,7 +32,7 @@ export default async function PostsHandler(req, res) {
         const post_id = req.query.id;
         const { post_title, post_content, post_altered } = req.body;
         console.log(req.body);
-        const putPost = await client.query(
+        const putPost = await db.query(
           "UPDATE posts SET post_timestamp=now(), post_title=($1), post_content=($2), post_altered=($3) where post_id = ($4) RETURNING *",
           [post_title, post_content, post_altered, parseInt(post_id)]
         );
@@ -48,7 +48,7 @@ export default async function PostsHandler(req, res) {
     case "DELETE":
       try {
         const post_id = req.query.id;
-        const deletePost = await client.query(
+        const deletePost = await db.query(
           "DELETE FROM POSTS WHERE post_id = ($1) RETURNING *",
           [post_id]
         );

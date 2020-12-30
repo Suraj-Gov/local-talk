@@ -2,7 +2,7 @@
 
 // GET gets all upvotes for userId, should specify it with posts=all or post=postID
 
-import client from "../../../lib/db";
+import db from "../../../lib/db";
 
 export default async function UpvotedHandler(req, res) {
   const { method } = req;
@@ -12,7 +12,7 @@ export default async function UpvotedHandler(req, res) {
       try {
         const userId = req.query.userId;
         if (userId !== undefined) {
-          const result = await client.query(
+          const result = await db.query(
             "SELECT upvoted_posts, upvoted_comments FROM upvoted WHERE upvoted_user_id = ($1)",
             [userId]
           );
