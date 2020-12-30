@@ -156,6 +156,7 @@ export default function Posts({ posts }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        paddingTop: "2rem",
       }}
     >
       <h1>Loading...</h1>
@@ -167,7 +168,7 @@ export default function Posts({ posts }) {
           <PostContainer key={post.post_details.post_id}>
             <ImageContainer image={post.post_details.post_image}>
               {post.post_details.post_image !== "NO" && (
-                <img src={post.post_details.post_image} />
+                <img src={post.post_details.post_image} alt="Post image" />
               )}
             </ImageContainer>
             <PostWords>

@@ -49,6 +49,7 @@ function MyApp({ Component, pageProps }) {
               <meta
                 name="viewport"
                 content="initial-scale=1.0, width=device-width"
+                lang="en"
               />
             </Head>
             <Component {...pageProps} />
