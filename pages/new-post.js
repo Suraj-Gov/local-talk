@@ -63,6 +63,7 @@ export default function newPost() {
 
   async function submitPost(e) {
     e.preventDefault();
+    e.target.disabled = true;
     const newPost = {
       post_title: title,
       post_content: content,
@@ -71,8 +72,13 @@ export default function newPost() {
       post_author_auth0_id: userDetails.sub,
       post_image: imageURL.length === 0 ? "NO" : imageURL,
     };
-    const sendPost = await Axios.post(`/api/posts`, newPost);
-    router.replace(`/posts/${sendPost.data.post_id}`);
+    try {
+      const sendPost = await Axios.post(`/api/posts`, newPost);
+      router.replace(`/posts/${sendPost.data.post_id}`);
+    } catch (err) {
+      alert("Something went wrong");
+      e.target.disabled = false;
+    }
   }
 
   return userDetails ? (
