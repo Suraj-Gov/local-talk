@@ -2,7 +2,7 @@
 
 // POST add a new comment needs - comment_author, comment_content, comment_post
 
-import pool from "../../../lib/db";
+import client from "../../../lib/db";
 
 export default async function CommentsHandler(req, res) {
   const { method } = req;
@@ -12,7 +12,7 @@ export default async function CommentsHandler(req, res) {
       try {
         console.log("adding comment", req.body);
         const { comment_author, comment_content, comment_post } = req.body;
-        const newComment = await pool.query(
+        const newComment = await client.query(
           "INSERT INTO comments (comment_author, comment_content, comment_post) VALUES ($1, $2, $3) RETURNING *",
           [comment_author, comment_content, comment_post]
         );

@@ -1,6 +1,6 @@
 // USAGE
 
-import pool from "../../../lib/db";
+import client from "../../../lib/db";
 
 export default async function UpvotedHandle(req, res) {
   const { method } = req;
@@ -16,11 +16,11 @@ export default async function UpvotedHandle(req, res) {
           if (upvote) {
             const up =
               postId === null
-                ? await pool.query(
+                ? await client.query(
                     "INSERT INTO upvoted (upvoted_user_id, upvoted_comment) VALUES ($1, $2) RETURNING *",
                     [userId, commentId]
                   )
-                : await pool.query(
+                : await client.query(
                     "INSERT INTO upvoted (upvoted_user_id, upvoted_post) VALUES ($1, $2) RETURNING *",
                     [userId, postId]
                   );
@@ -28,11 +28,11 @@ export default async function UpvotedHandle(req, res) {
           } else {
             const down =
               postId === null
-                ? await pool.query(
+                ? await client.query(
                     "DELETE FROM upvoted WHERE upvoted_user_id = ($1) AND upvoted_comment = ($2) AND upvoted_post IS NULL",
                     [userId, commentId]
                   )
-                : await pool.query(
+                : await client.query(
                     "DELETE FROM upvoted WHERE upvoted_user_id = ($1) AND upvoted_post = ($2) AND upvoted_comment IS NULL",
                     [userId, postId]
                   );
@@ -44,7 +44,7 @@ export default async function UpvotedHandle(req, res) {
         }
         const { post_title, post_content, post_altered } = req.body;
         console.log(req.body);
-        const putPost = await pool.query(
+        const putPost = await client.query(
           "UPDATE posts SET post_timestamp=now(), post_title=($1), post_content=($2), post_altered=($3) where post_id = ($4) RETURNING *",
           [post_title, post_content, post_altered, parseInt(post_id)]
         );

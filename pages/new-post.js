@@ -79,7 +79,7 @@ export default function newPost() {
     <form>
       <article style={{ backgroundColor: "#eeeeee" }}>
         <ImageContainer image={imageURL}>
-          {imageURL !== "" && <img src={imageURL} />}
+          {imageURL !== "" && <img src={imageURL} alt="Post image" />}
 
           <textarea
             placeholder={"Title"}
