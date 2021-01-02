@@ -103,9 +103,9 @@ export default function Post({
   return error === "ERR" ? (
     <>
       <Head>
-        <title>Oh crap. Something went wrong.</title>
+        <title>Something went wrong. Please refresh.</title>
       </Head>
-      <h1>Something went wrong 😐, please refresh.</h1>
+      <h1>Something went wrong 😐</h1>
     </>
   ) : router.isFallback ? (
     <h1>Loading...</h1>
@@ -253,16 +253,7 @@ export default function Post({
   );
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    // No pages are built at run time.
-    // Enable statically generating additional pages
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   let error = null;
   let post,
     comments = null;
@@ -297,9 +288,9 @@ export async function getStaticProps({ params }) {
     props: {
       post,
       comments,
-      error,
+      error: error === null ? "no error" : "ERR",
+      fallback: true,
     },
-    revalidate: 1,
   };
 }
 
