@@ -68,8 +68,8 @@ export default function Post({
       const finalTitle = titleRef.current.value;
       const finalContent = contentRef.current.value;
       const editedPost = {
-        post_title: finalTitle,
-        post_content: finalContent,
+        post_title: finalTitle.trim(),
+        post_content: finalContent.trim(),
         post_altered: true,
         post_id: fetchedPost.post_id,
       };
@@ -84,20 +84,24 @@ export default function Post({
     e.preventDefault();
     const newComment = {
       comment_author: userDetails.user_id,
-      comment_content: comment,
+      comment_content: comment.trim(),
       comment_post: fetchedPost.post_id,
     };
-    const sentComment = await axios.post("/api/comments", newComment);
-    sentComment.data["user_name"] = userDetails.user_name;
-    setComments((prev) => [
-      ...prev,
-      {
-        comment: [sentComment.data],
-        upvotes: [null],
-        user_details: [userDetails],
-      },
-    ]);
-    setComment("");
+    try {
+      const sentComment = await axios.post("/api/comments", newComment);
+      sentComment.data["user_name"] = userDetails.user_name;
+      setComments((prev) => [
+        ...prev,
+        {
+          comment: [sentComment.data],
+          upvotes: [null],
+          user_details: [userDetails],
+        },
+      ]);
+      setComment("");
+    } catch (err) {
+      alert("Something went wrong when submitting a comment");
+    }
   };
 
   return error === "ERR" ? (

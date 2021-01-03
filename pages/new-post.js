@@ -65,11 +65,11 @@ export default function newPost() {
     e.target.disabled = true;
     const newPost = {
       post_title: title,
-      post_content: content,
+      post_content: content.trim(),
       post_author: userDetails.user_id,
       post_location: userDetails.location_id,
       post_author_auth0_id: userDetails.sub,
-      post_image: imageURL.length === 0 ? "NO" : imageURL,
+      post_image: imageURL.length === 0 ? "NO" : imageURL.trim(),
     };
     try {
       const sendPost = await Axios.post(`/api/posts`, newPost);
@@ -100,7 +100,7 @@ export default function newPost() {
             placeholder="Unsplash Image URL"
             type="url"
             ref={imageRef}
-            onChange={(e) => setImageURL(e.target.value)}
+            onChange={(e) => setImageURL(e.target.value.trim())}
           />
           <EditButtonsDiv>
             {title && (
