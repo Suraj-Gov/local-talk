@@ -64,7 +64,7 @@ export default function App() {
 
   const fetchPosts = async (e, offset) => {
     e && (e.target.disabled = true);
-    setPostsContext({ loading: true });
+    !e && setPostsContext({ loading: true });
     const posts = await Axios.get(
       `/api/posts?city=${userDetails.city}&offset=${offset}`
     );
@@ -109,16 +109,18 @@ export default function App() {
               paddingBottom: "3rem",
             }}
           >
-            {!hideViewMore && postsContext !== null && postsContext.length > 9 && (
-              <LoadMorePosts
-                onClick={(e) => {
-                  offset.current += postsContext.length;
-                  fetchPosts(e, offset.current);
-                }}
-              >
-                View More
-              </LoadMorePosts>
-            )}
+            {!hideViewMore &&
+              postsContext !== null &&
+              postsContext.length >= 9 && (
+                <LoadMorePosts
+                  onClick={(e) => {
+                    offset.current += postsContext.length;
+                    fetchPosts(e, offset.current);
+                  }}
+                >
+                  View More
+                </LoadMorePosts>
+              )}
           </div>
         </>
       )}
