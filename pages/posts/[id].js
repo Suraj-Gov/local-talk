@@ -82,6 +82,7 @@ export default function Post({
 
   const submitComment = async (e) => {
     e.preventDefault();
+    e.target.disabled = true;
     const newComment = {
       comment_author: userDetails.user_id,
       comment_content: comment.trim(),
@@ -102,6 +103,7 @@ export default function Post({
     } catch (err) {
       alert("Something went wrong when submitting a comment");
     }
+    e.target.disabled = false;
   };
 
   return error === "ERR" ? (
@@ -243,9 +245,11 @@ export default function Post({
                   onChange={(e) => setComment(e.target.value)}
                 />
 
-                <CommentSubmitButton onClick={(e) => submitComment(e)}>
-                  Submit comment
-                </CommentSubmitButton>
+                {comment.length > 0 && (
+                  <CommentSubmitButton onClick={(e) => submitComment(e)}>
+                    Submit comment
+                  </CommentSubmitButton>
+                )}
               </CommentForm>
             </>
           ) : (
