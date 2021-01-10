@@ -12,14 +12,14 @@ const PostsContainer = styled.div`
   width: 85vw;
   margin: 2em auto;
   grid-gap: 6rem;
-  padding-bottom: 10rem;
+  padding-bottom: 2rem;
 
   @media only screen and (max-width: 600px) {
     margin: 0;
     width: 100%;
     display: block;
     padding: 1rem;
-    padding-bottom: 10rem;
+    padding-bottom: 3rem;
   }
 
   @media only screen and (max-width: 1000px) {

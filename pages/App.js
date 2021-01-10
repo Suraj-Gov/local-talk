@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import UserContext from "../context/UserContext";
 import PostsContext from "../context/PostsContext";
 import HandleUserLogin from "./HandleUserLogin";
@@ -27,6 +27,18 @@ const AddNewPost = styled.button`
   }
 `;
 
+const LoadMorePosts = styled.button`
+  color: black;
+  border: none;
+  font-size: 1.2em;
+  background-color: #eeeeee;
+  border: 2px solid #dedede;
+  border-radius: 8px;
+  padding: 0.3em 0.85em;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+`;
+
 const LocationH1 = styled.h1`
   @media only screen and (min-width: 600px) {
     display: none;
@@ -36,30 +48,43 @@ const LocationH1 = styled.h1`
 
 export default function App() {
   const [errorInPost, setErrorInPosts] = useState();
-  const { userDetails, setUserDetails } = useContext(UserContext);
-  const [offset, setOffset] = useState(0);
+  const { userDetails } = useContext(UserContext);
+  const offset = useRef(0);
   const { posts: postsContext, setPosts: setPostsContext } = useContext(
     PostsContext
   );
+  const [hideViewMore, setHideViewMore] = useState(false);
 
   useEffect(async () => {
     if (userDetails && userDetails.city !== undefined) {
       localStorage.setItem("userDetails", JSON.stringify(userDetails));
-      setPostsContext({ loading: true });
-      const posts = await Axios.get(
-        `/api/posts?city=${userDetails.city}&offset=${offset}`
-      );
-      // console.log(posts.data);
-      const structuredPosts = posts.data.map((post) => {
-        return {
-          post_details: post.post_details[0],
-          user_details: post.user_details[0],
-          upvotes: post.upvotes,
-        };
-      });
-      setPostsContext(structuredPosts);
+      fetchPosts(undefined, offset.current);
     }
   }, [userDetails]);
+
+  const fetchPosts = async (e, offset) => {
+    e && (e.target.disabled = true);
+    setPostsContext({ loading: true });
+    const posts = await Axios.get(
+      `/api/posts?city=${userDetails.city}&offset=${offset}`
+    );
+    const structuredPosts = posts.data.map((post) => {
+      return {
+        post_details: post.post_details[0],
+        user_details: post.user_details[0],
+        upvotes: post.upvotes,
+      };
+    });
+    if (structuredPosts.length < 9) {
+      setHideViewMore(true);
+    }
+    if (offset === 0) {
+      setPostsContext(structuredPosts);
+      return;
+    }
+    setPostsContext([...postsContext, ...structuredPosts]);
+    e && (e.target.disabled = false);
+  };
 
   return (
     <>
@@ -76,6 +101,25 @@ export default function App() {
             </LocationH1>
           )}
           <Posts posts={postsContext} />
+          <div
+            style={{
+              display: "flex",
+              // alignItems: "center",
+              justifyContent: "center",
+              paddingBottom: "3rem",
+            }}
+          >
+            {!hideViewMore && postsContext !== null && postsContext.length > 9 && (
+              <LoadMorePosts
+                onClick={(e) => {
+                  offset.current += postsContext.length;
+                  fetchPosts(e, offset.current);
+                }}
+              >
+                View More
+              </LoadMorePosts>
+            )}
+          </div>
         </>
       )}
       {userDetails && (
