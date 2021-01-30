@@ -24,7 +24,7 @@ export default async function UpvotedHandle(req, res) {
                     "INSERT INTO upvoted (upvoted_user_id, upvoted_post) VALUES ($1, $2) RETURNING *",
                     [userId, postId]
                   );
-            console.log(up, "upvoted");
+            console.log("upvoted");
           } else {
             const down =
               postId === null
@@ -36,7 +36,7 @@ export default async function UpvotedHandle(req, res) {
                     "DELETE FROM upvoted WHERE upvoted_user_id = ($1) AND upvoted_post = ($2) AND upvoted_comment IS NULL",
                     [userId, postId]
                   );
-            console.log(down, "downvoted");
+            console.log("downvoted");
           }
           console.log(`${upvote ? "upvoted " : "downvoted "}post: ${post_id}`);
           res.json({ status: upvote ? "upvoted" : "downvoted" });
